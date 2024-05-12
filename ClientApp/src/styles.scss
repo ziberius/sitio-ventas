@@ -12,3 +12,108 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/flags/flags.css";
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
+
+
+.p-menubar {
+    background-color: #ffffff; /* Color de fondo */
+}
+
+.p-menubar .p-menuitem-link {
+    color: #333; /* Color de texto */
+}
+
+.p-menubar .p-menuitem-link:hover {
+    background-color: #ddd; /* Color de fondo al pasar el cursor */
+}
+
+.p-menubar {
+    border: 1px solid #ccc; /* Borde */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+.p-menubar .p-submenu-list {
+    background-color: #f8f8f8; /* Color de fondo del submenú */
+    border: 1px solid #ccc; /* Borde del submenú */
+}
+
+.p-menubar .p-submenu-header {
+    background-color: #ddd; /* Color de fondo del encabezado del submenú */
+}
+
+::ng-deep .p-megamenu .p-menuitem-content {
+    position: relative;
+}
+
+::ng-deep .p-megamenu .p-menuitem-content:hover .p-megamenu-panel {
+    display: block;
+}
+
+::ng-deep .p-megamenu .p-megamenu-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+}
+
+.menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-left:2vw;
+}
+
+.menu > li {
+    display: inline-block;
+    position: relative;
+    margin-right:1vw;
+}
+
+.menu > li > a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
+}
+
+.submenu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    padding: 0;
+    min-width: 150px;
+    z-index: 1;
+    visibility:hidden;
+}
+
+.menu > li .submenu {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.menu > li:hover .submenu {
+    visibility: visible;
+    opacity: 1;
+}
+
+.submenu > li {
+    display: block;
+}
+
+.submenu > li > a {
+    padding: 10px;
+    color: #000;
+    text-decoration: none;
+    display:block;
+}
+
+.submenu > li > a:hover {
+    background-color: #f2f2f2;
+}
+
+.topbar{
+    justify-content:left;
+    align-items:center;
+}
+

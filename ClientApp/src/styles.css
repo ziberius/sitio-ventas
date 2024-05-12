@@ -14,3 +14,30 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.p-menubar {
+    background-color: #f8f8f8; /* Color de fondo */
+}
+
+.p-menubar .p-menuitem-link {
+    color: #333; /* Color de texto */
+}
+
+.p-menubar .p-menuitem-link:hover {
+    background-color: #ddd; /* Color de fondo al pasar el cursor */
+}
+
+.p-menubar {
+    border: 1px solid #ccc; /* Borde */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+.p-menubar .p-submenu-list {
+    background-color: #f8f8f8; /* Color de fondo del submenú */
+    border: 1px solid #ccc; /* Borde del submenú */
+}
+
+.p-menubar .p-submenu-header {
+    background-color: #ddd; /* Color de fondo del encabezado del submenú */
+}
+

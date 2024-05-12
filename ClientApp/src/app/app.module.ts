@@ -11,14 +11,18 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
+import { ConvertirStockDirective } from './demo/directives/convertir-stock.directive';
+import { MenubarModule } from 'primeng/menubar';
+
 
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent
+        AppComponent, NotfoundComponent, ConvertirStockDirective
     ],
     imports: [
         AppRoutingModule,
-        AppLayoutModule
+        AppLayoutModule,
+        MenubarModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

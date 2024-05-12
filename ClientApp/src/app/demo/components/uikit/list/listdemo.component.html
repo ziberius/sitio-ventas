@@ -1,14 +1,14 @@
 <div class="grid">
 	<div class="col-12">
 		<div class="card">
-			<h5>DataView</h5>
+			<h5>Productos</h5>
 			<p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
 				<ng-template pTemplate="header">
 					<div class="flex flex-column md:flex-row md:justify-content-between gap-2">
-						<p-dropdown [options]="sortOptions" placeholder="Sort By Price" (onChange)="onSortChange($event)"></p-dropdown>
+						<p-dropdown [options]="sortOptions" placeholder="Ordenar por precio" (onChange)="onSortChange($event)"></p-dropdown>
 						<span class="p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input type="search" pInputText placeholder="Search by Name" (input)="onFilter(dv, $event)">
+                            <input type="search" pInputText placeholder="Buscar por nombre" (input)="onFilter(dv, $event)">
                         </span>	
 						<p-dataViewLayoutOptions></p-dataViewLayoutOptions>
 					</div>
@@ -29,8 +29,8 @@
 							</div>
 							<div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
 								<span class="text-2xl font-semibold mb-2 align-self-center md:align-self-end">${{product.price}}</span>
-								<p-button icon="pi pi-shopping-cart" label="Add to Cart" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'" styleClass="mb-2 p-button-sm"></p-button>
-								<span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>
+								<p-button icon="pi pi-shopping-cart" label="Agregar al carro" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'" styleClass="mb-2 p-button-sm"></p-button>
+								<span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()"><p appConvertirStock>{{product.inventoryStatus}}</p></span>
 							</div>
 						</div>
 					</div>
@@ -44,7 +44,7 @@
 									<i class="pi pi-tag mr-2"></i>
 									<span class="font-semibold">{{product.category}}</span>
 								</div>
-								<span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>
+								<span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()"><p appConvertirStock>{{product.inventoryStatus}}</p></span>
 							</div>
 							<div class="flex flex-column align-items-center text-center mb-3">
 								<img [src]="'assets/demo/images/product/' + product.image" [alt]="product.name" class="w-9 shadow-2 my-3 mx-0"/>
@@ -63,26 +63,4 @@
 		</div>
 	</div>
 
-	<div class="col-12 xl:col-8">
-		<div class="card">
-			<h5>PickList</h5>
-			<p-pickList [source]="sourceCities" [target]="targetCities" sourceHeader="From" targetHeader="To" [dragdrop]="true"
-						[responsive]="true" [sourceStyle]="{'height':'250px'}" [targetStyle]="{'height':'250px'}">
-				<ng-template let-city pTemplate="item">
-					<div>{{city.name}}</div>
-				</ng-template>
-			</p-pickList>
-		</div>
-	</div>
-
-	<div class="col-12 xl:col-4">
-		<div class="card">
-			<h5>OrderList</h5>
-			<p-orderList [value]="orderCities" header="Cities" [dragdrop]="true" [listStyle]="{'height':'250px'}">
-				<ng-template let-city pTemplate="item">
-					<div>{{city.name}}</div>
-				</ng-template>
-			</p-orderList>
-		</div>
-	</div>
 </div>
