@@ -13,6 +13,7 @@ import { Product } from '../../api/product';
 export class LandingComponent {
 
     products: Product[] = [];
+    productsDestacados: Product[] = [];
     items: MegaMenuItem[] | undefined;
     item: MenuItem | undefined;
     responsiveOptions: any[] | undefined;
@@ -42,6 +43,12 @@ export class LandingComponent {
         this.productService.getProducts().then(data =>
             this.products = data
         );
+
+        this.productService.getProductsSmall().then(data =>
+            this.productsDestacados = data
+        );
+
+
 
         this.items = [
             {
