@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SitioVentas.Constants\SitioVentas.Constants.csproj" />
+    <ProjectReference Include="..\SitioVentas.Dto\SitioVentas.Dto.csproj" />
+    <ProjectReference Include="..\SitioVentas.Entities\SitioVentas.Entities.csproj" />
+    <ProjectReference Include="..\SitioVentas.Repository\SitioVentas.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

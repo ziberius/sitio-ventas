@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitioVentas", "SitioVentas.csproj", "{26C9E99C-BB6D-446A-B57F-CD2EFB0DA0D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitioVentas", ".\SitioVentas\SitioVentas.csproj", "{26C9E99C-BB6D-446A-B57F-CD2EFB0DA0D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitioVentas.Constants", ".\SitioVentas.Constants\SitioVentas.Constants.csproj", "{5D237A9A-8EE8-411E-BD26-4153A831CA69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitioVentas.Dto", ".\SitioVentas.Dto\SitioVentas.Dto.csproj", "{10CCBB66-33D6-40BF-AFA3-D21C1F750C11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitioVentas.Entities", ".\SitioVentas.Entities\SitioVentas.Entities.csproj", "{6A191AB1-59A1-4FD1-A3DA-A7226836B9B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitioVentas.Repository", ".\SitioVentas.Repository\SitioVentas.Repository.csproj", "{4F0D5F48-0CE0-4E61-9A97-D9EF282AE0FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitioVentas.Services", ".\SitioVentas.Services\SitioVentas.Services.csproj", "{A73AEAE1-8DE7-4A77-88EB-8A9B90F2D1AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,26 @@ Global
 		{26C9E99C-BB6D-446A-B57F-CD2EFB0DA0D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26C9E99C-BB6D-446A-B57F-CD2EFB0DA0D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26C9E99C-BB6D-446A-B57F-CD2EFB0DA0D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D237A9A-8EE8-411E-BD26-4153A831CA69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D237A9A-8EE8-411E-BD26-4153A831CA69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D237A9A-8EE8-411E-BD26-4153A831CA69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D237A9A-8EE8-411E-BD26-4153A831CA69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10CCBB66-33D6-40BF-AFA3-D21C1F750C11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10CCBB66-33D6-40BF-AFA3-D21C1F750C11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10CCBB66-33D6-40BF-AFA3-D21C1F750C11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10CCBB66-33D6-40BF-AFA3-D21C1F750C11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A191AB1-59A1-4FD1-A3DA-A7226836B9B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A191AB1-59A1-4FD1-A3DA-A7226836B9B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A191AB1-59A1-4FD1-A3DA-A7226836B9B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A191AB1-59A1-4FD1-A3DA-A7226836B9B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0D5F48-0CE0-4E61-9A97-D9EF282AE0FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0D5F48-0CE0-4E61-9A97-D9EF282AE0FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0D5F48-0CE0-4E61-9A97-D9EF282AE0FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0D5F48-0CE0-4E61-9A97-D9EF282AE0FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A73AEAE1-8DE7-4A77-88EB-8A9B90F2D1AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A73AEAE1-8DE7-4A77-88EB-8A9B90F2D1AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A73AEAE1-8DE7-4A77-88EB-8A9B90F2D1AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A73AEAE1-8DE7-4A77-88EB-8A9B90F2D1AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
