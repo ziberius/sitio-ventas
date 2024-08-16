@@ -1,8 +1,25 @@
+using MySql.Data.MySqlClient;
+using SitioVentas.Repository.IRepository;
+using SitioVentas.Repository.Repository;
+using SitioVentas.Services;
+using SitioVentas.Services.IServices;
+using SitioVentas.Services.Services;
+using System.Configuration;
+using System.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IDbConnection>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    return new MySqlConnection(connectionString);
+});
+
+builder.Services.AddTransient<IItemRepository, ItemRepository>();
+builder.Services.AddTransient<IItemService,ItemService>();
 
 var app = builder.Build();
 
@@ -16,6 +33,12 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+    c.RoutePrefix = string.Empty;
+});
 
 
 app.MapControllerRoute(

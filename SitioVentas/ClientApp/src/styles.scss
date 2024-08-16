@@ -122,3 +122,26 @@ $gutter: 1rem; //for primeflex grid system
     height:15px !important;
     width:15px !important;
 }
+
+.carusel-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carusel-destacado {
+    width: 100%;
+    max-width:800px;
+    height: auto;
+}
+
+.carusel-destacado .ui-carousel-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carusel-destacado img {
+    max-width: 100%;
+    height: auto;
+}

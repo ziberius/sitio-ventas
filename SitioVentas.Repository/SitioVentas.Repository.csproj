@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+    <PackageReference Include="MySql.Data" Version="9.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SitioVentas.Dto\SitioVentas.Dto.csproj" />
     <ProjectReference Include="..\SitioVentas.Entities\SitioVentas.Entities.csproj" />
   </ItemGroup>
 

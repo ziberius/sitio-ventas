@@ -41,3 +41,18 @@ code {
     background-color: #ddd; /* Color de fondo del encabezado del submenú */
 }
 
+.carusel-destacado {
+    width: 100%;
+    height: auto;
+}
+
+.carusel-destacado .ui-carousel-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carusel-destacado img {
+    max-width: 100%;
+    height: auto;
+}
