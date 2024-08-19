@@ -6,13 +6,9 @@ namespace SitioVentas.Entities.Entities.Base
 {
     public class Base
     {
-        public DateTime FechaCreacion { get; set; }
+        public DateTime Creado { get; set; }
 
-        public DateTime? FechaActualizacion { get; set; }
-
-        public string UsuarioCreador { get; set; }
-
-        public string UsuarioActualizador { get; set; }
+        public DateTime? Actualizado { get; set; }
 
         public bool Activo { get; set; }
     }

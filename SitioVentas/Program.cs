@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using MySql.Data.MySqlClient;
 using SitioVentas.Repository.IRepository;
 using SitioVentas.Repository.Repository;
@@ -18,8 +19,24 @@ builder.Services.AddTransient<IDbConnection>(provider =>
     return new MySqlConnection(connectionString);
 });
 
+//Repositorios
 builder.Services.AddTransient<IItemRepository, ItemRepository>();
+builder.Services.AddTransient<IGrupoRepository, GrupoRepository>();
+builder.Services.AddTransient<ISubGrupoRepository, SubGrupoRepository>();
+builder.Services.AddTransient<ITipoRepository, TipoRepository>();
+builder.Services.AddTransient<IFotoRepository, FotoRepository>();
+
+//Servicios
 builder.Services.AddTransient<IItemService,ItemService>();
+builder.Services.AddTransient<IBackupService, BackupService>();
+
+builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
+builder.Services.AddRazorPages();
+builder.Services.AddOptions();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+});
 
 var app = builder.Build();
 
@@ -40,10 +57,13 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
 });
 
+app.UseMvc(routes =>
+{
+    routes.MapRoute(
+        name: "default",
+        template: "{controller}/{action=Index}/{id?}");
+});
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html"); ;
 
