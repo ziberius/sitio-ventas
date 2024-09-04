@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IProducto } from '../api/producto';
+import { Observable } from 'rxjs';
 import { Product } from '../api/product';
 
 @Injectable()
 export class ProductService {
-
+    private apiUrl = '/api/item'; 
     constructor(private http: HttpClient) { }
 
     getProductsSmall() {
@@ -12,6 +14,10 @@ export class ProductService {
             .toPromise()
             .then(res => res.data as Product[])
             .then(data => data);
+    }
+
+    getProductos(): Observable<IProducto[]> {
+        return this.http.get<IProducto[]>(this.apiUrl);
     }
 
     getProducts() {

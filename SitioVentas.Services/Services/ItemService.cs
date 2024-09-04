@@ -50,11 +50,9 @@ namespace SitioVentas.Services.Services
             var itemList = (await _itemRepository.GetAll()).ToList();
             if (itemList != null)
             {
-                List<ItemDto> listDto = new List<ItemDto>();
                 foreach (var item in itemList)
                 {
-                    ItemDto itemDto = new ItemDto();
-                    itemDto = ItemMapper.InfoEntityToDto(item);
+                    ItemDto itemDto = ItemMapper.InfoEntityToDto(item);
                     list.Add(itemDto);
                 }
             }

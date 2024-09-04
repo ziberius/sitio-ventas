@@ -13,9 +13,9 @@ namespace SitioVentas.Repository.Helpers.Mappers
         {
             Item item = new Item();
             item.Id = itemDto.Id;
-            item.Descripcion = itemDto.Description;
-            item.Nombre = itemDto.Name;
-            item.Tipo = itemDto.Type;
+            item.Descripcion = itemDto.Descripcion;
+            item.Nombre = itemDto.Nombre;
+            item.Tipo = itemDto.Tipo;
 
             return item;
         }
@@ -24,11 +24,13 @@ namespace SitioVentas.Repository.Helpers.Mappers
         {
             ItemDto itemDto = new ItemDto();
             itemDto.Id = item.Id;
-            itemDto.Description = item.Descripcion;
-            itemDto.Type = item.Tipo;
-            itemDto.Name = item.Nombre;
+            itemDto.Descripcion = item.Descripcion;
+            itemDto.Tipo = item.Tipo;
+            itemDto.Nombre = item.Nombre;
+            itemDto.Codigo = item.Codigo;
             itemDto.Creado = item.Creado;
             itemDto.Activo = item.Activo;
+            itemDto.Precio = item.Precio;
 
             return itemDto;
         }
