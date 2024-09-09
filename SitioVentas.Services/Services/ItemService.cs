@@ -52,7 +52,17 @@ namespace SitioVentas.Services.Services
             {
                 foreach (var item in itemList)
                 {
+                    var fotos = (await _fotoRepository.GetAllByExpression(f => f.ItemId == item.Id)).ToList();
                     ItemDto itemDto = ItemMapper.InfoEntityToDto(item);
+                    FotoDto fotoDto;
+                    itemDto.Fotos = new List<FotoDto>();
+                    var foto = fotos.Find(x => x.Prioridad == 1);
+                    if (foto != null)
+                    {
+                        fotoDto = BuscarFoto(itemDto.Creado, foto);
+                        itemDto.Fotos.Add(fotoDto);
+                        
+                    }
                     list.Add(itemDto);
                 }
             }

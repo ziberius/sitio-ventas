@@ -95,6 +95,7 @@ namespace SitioVentas.Services.Services
             _logger.LogInformation($"[BackupService] BUSCANDO ARCHIVO LOCAL NOMBRE: {arch.NombreArchivo}");
             try
             {
+                _logger.LogInformation("Current directory:" + Directory.GetCurrentDirectory());
                 var archivo = File.ReadAllBytes(arch.Ruta + Path.DirectorySeparatorChar + arch.NombreArchivo);
                 arch.ContenidoArchivoB64 = Convert.ToBase64String(archivo);
 

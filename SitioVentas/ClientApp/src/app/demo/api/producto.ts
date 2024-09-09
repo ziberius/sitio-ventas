@@ -7,5 +7,6 @@ export interface IProducto {
     descripcion?: string;
     precio?: number;
     subgrupo?: string;
+    cantidad?: number;
     fotos?: IFoto[];
 }

@@ -13,5 +13,6 @@ namespace SitioVentas.Entities.Entities
         public string? Descripcion { get; set; }
         public int Precio { get; set; }
         public int Subgrupo { get; set; }
+        public int Cantidad { get; set; }
     }
 }

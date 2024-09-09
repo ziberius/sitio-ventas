@@ -35,6 +35,7 @@
                         <th>Imagen</th>
                         <th pSortableColumn="price">Precio <p-sortIcon field="price"></p-sortIcon></th>
                         <th pSortableColumn="category">Categoria <p-sortIcon field="category"></p-sortIcon></th>
+                        <th pSortableColumn="cantidad">Cantidad <p-sortIcon field="cantidad"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -43,15 +44,17 @@
                         <td>
                             <p-tableCheckbox [value]="product"></p-tableCheckbox>
                         </td>
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Codigo</span>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Codigo</span>
                             {{product.codigo || product.id}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Name</span>
+                            <span class="p-column-title">Nombre</span>
                             {{product.nombre}}
                         </td>
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Imagen</span>
-                            <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.nombre" width="100" class="shadow-4" />
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Imagen</span>
+                            <img [src]="product.fotos[0].imageUrl" [alt]="product.nombre" width="100" class="shadow-4" />
                         </td>
                         <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">Precio</span>
@@ -60,6 +63,10 @@
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Categoria</span>
                             {{product.subgrupo}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Cantidad</span>
+                            {{product.cantidad}}
                         </td>
                         <td>
                             <div class="flex">
@@ -72,10 +79,41 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Detalle del Producto" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="productDialog" [style]="{width: '600px'}" header="Detalle del Producto" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
-                <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="product.image">
-                <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Subir imagen" class="mr-2 inline-block"></p-fileUpload>
+                <p-fileUpload #subirFotos chooseLabel="Seleccionar imágenes" uploadLabel="Cargar imágenes" cancelLabel="Cancelar"
+                              accept="image/*" name="myfile[]" [disabled]="itemNew.fotos?.length === 3"
+                              customUpload="true" (uploadHandler)="subirFoto($event)" (onRemove)="eliminarFoto($event)" (onClear)="eliminarFotos()" (onSelect)="seleccionarFotos($event)" invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido,"
+                              invalidFileTypeMessageDetail="Solo se permiten imágenes" maxFileSize="{{maxSize}}" multiple="multiple"
+                              invalidFileSizeMessageSummary="{0}: Tamaño supera el límite," invalidFileSizeMessageDetail="Tamaño máximo es {0}."
+                              pTooltip="Se recomienda imagen con resolución 1920x1080 o 1080x1920. Tamaño máximo 3 Mb.">
+                </p-fileUpload>
+                <div *ngIf="this.itemNew?.fotos?.length > 0" class="p-field p-col-12 p-md-12">
+                    <p-table [value]="this.itemNew.fotos" [autoLayout]="true">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th style="width: 12%;">Acciones</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-archivo let-index="rowIndex">
+                            <tr>
+                                <td>{{ archivo.nombre }}</td>
+                                <td>{{ archivo.tipo }}</td>
+                                <td style="width: 12%;">
+                                    <button pButton pRipple icon="pi pi-download" class="p-button-rounded p-button-warning" (click)="descargarArchivo(archivo)"></button>
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-secondary" (click)="eliminarArchivo(archivo)"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="footer">
+                            <footer>
+                                <button pButton pRipple type="button" icon="pi pi-eye" (click)="sliderImagenes(true)" class="p-button-primary button-footer" iconPos="left" label="Mostrar Imágenes"></button>
+                            </footer>
+                        </ng-template>
+                    </p-table>
+                </div>
                 <div class="field">
                     <label for="name">Nombre</label>
                     <input type="text" pInputText id="name" [(ngModel)]="product.nombre" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.nombre}" />

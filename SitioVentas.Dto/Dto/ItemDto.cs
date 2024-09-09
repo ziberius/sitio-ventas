@@ -14,6 +14,8 @@
         public DateTime? Actualizado { get; set; }
         public bool Activo {  get; set; }
         public int Precio { get; set; }
+
+        public int Cantidad { get; set; }
         public ItemDto() { }
 
 
