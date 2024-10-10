@@ -32,6 +32,7 @@
                         </th>
                         <th pSortableColumn="code">Codigo <p-sortIcon field="code"></p-sortIcon></th>
                         <th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="name">Descripción <p-sortIcon field="name"></p-sortIcon></th>
                         <th>Imagen</th>
                         <th pSortableColumn="price">Precio <p-sortIcon field="price"></p-sortIcon></th>
                         <th pSortableColumn="category">Categoria <p-sortIcon field="category"></p-sortIcon></th>
@@ -53,16 +54,20 @@
                             {{product.nombre}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Descripción</span>
+                            {{product.descripcion}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Imagen</span>
                             <img [src]="product.fotos[0].imageUrl" [alt]="product.nombre" width="100" class="shadow-4" />
                         </td>
                         <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">Precio</span>
-                            {{product.precio | currency:'CLP'}}
+                            {{product.precio | currency:'CLP '}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Categoria</span>
-                            {{product.subgrupo}}
+                            {{product.subgrupoNombre}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Cantidad</span>
@@ -79,83 +84,115 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="productDialog" [style]="{width: '600px'}" header="Detalle del Producto" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="productDialog" [style]="{width: '800px'}" header="Detalle del Producto" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
-                <p-fileUpload #subirFotos chooseLabel="Seleccionar imágenes" uploadLabel="Cargar imágenes" cancelLabel="Cancelar"
-                              accept="image/*" name="myfile[]" [disabled]="itemNew.fotos?.length === 3"
-                              customUpload="true" (uploadHandler)="subirFoto($event)" (onRemove)="eliminarFoto($event)" (onClear)="eliminarFotos()" (onSelect)="seleccionarFotos($event)" invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido,"
-                              invalidFileTypeMessageDetail="Solo se permiten imágenes" maxFileSize="{{maxSize}}" multiple="multiple"
-                              invalidFileSizeMessageSummary="{0}: Tamaño supera el límite," invalidFileSizeMessageDetail="Tamaño máximo es {0}."
-                              pTooltip="Se recomienda imagen con resolución 1920x1080 o 1080x1920. Tamaño máximo 3 Mb.">
-                </p-fileUpload>
-                <div *ngIf="this.itemNew?.fotos?.length > 0" class="p-field p-col-12 p-md-12">
-                    <p-table [value]="this.itemNew.fotos" [autoLayout]="true">
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Tipo</th>
-                                <th style="width: 12%;">Acciones</th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-archivo let-index="rowIndex">
-                            <tr>
-                                <td>{{ archivo.nombre }}</td>
-                                <td>{{ archivo.tipo }}</td>
-                                <td style="width: 12%;">
-                                    <button pButton pRipple icon="pi pi-download" class="p-button-rounded p-button-warning" (click)="descargarArchivo(archivo)"></button>
-                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-secondary" (click)="eliminarArchivo(archivo)"></button>
-                                </td>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="footer">
-                            <footer>
-                                <button pButton pRipple type="button" icon="pi pi-eye" (click)="sliderImagenes(true)" class="p-button-primary button-footer" iconPos="left" label="Mostrar Imágenes"></button>
-                            </footer>
-                        </ng-template>
-                    </p-table>
+                <div class="field">
+                    <p-fileUpload #subirFotos chooseLabel="Seleccionar imágenes" uploadLabel="Cargar imágenes" cancelLabel="Cancelar"
+                                  accept="image/*" name="myfile[]" [disabled]="itemNew.fotos?.length === 3"
+                                  customUpload="true" (uploadHandler)="subirFoto($event)" (onRemove)="eliminarFoto($event)" (onClear)="eliminarFotos()" (onSelect)="seleccionarFotos($event)" invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido,"
+                                  invalidFileTypeMessageDetail="Solo se permiten imágenes" maxFileSize="{{maxSize}}" multiple="multiple"
+                                  invalidFileSizeMessageSummary="{0}: Tamaño supera el límite," invalidFileSizeMessageDetail="Tamaño máximo es {0}."
+                                  pTooltip="Se recomienda imagen con resolución 1920x1080 o 1080x1920. Tamaño máximo 3 Mb.">
+                    </p-fileUpload>
+                    <div *ngIf="this.itemNew?.fotos?.length > 0" class="p-field p-col-12 p-md-12">
+                        <p-table [value]="this.itemNew.fotos" [autoLayout]="true">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
+                                    <th style="width: 12%;">Acciones</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-archivo let-index="rowIndex">
+                                <tr>
+                                    <td>{{ archivo.nombre }}</td>
+                                    <td>{{ archivo.tipo }}</td>
+                                    <td style="width: 12%;">
+                                        <button pButton pRipple icon="pi pi-download" class="p-button-rounded p-button-warning" (click)="descargarArchivo(archivo)"></button>
+                                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-secondary" (click)="eliminarArchivo(archivo)"></button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="name">Código</label>
+                    <input type="text" pInputText id="name" [(ngModel)]="itemNew.codigo" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !itemNew.codigo}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !itemNew.codigo">Código es requerido.</small>
                 </div>
                 <div class="field">
                     <label for="name">Nombre</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="product.nombre" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.nombre}" />
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.nombre">Nombre es requerido.</small>
+                    <input type="text" pInputText id="name" [(ngModel)]="itemNew.nombre" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !itemNew.nombre}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !itemNew.nombre">Nombre es requerido.</small>
                 </div>
                 <div class="field">
                     <label for="description">Descripion</label>
-                    <textarea id="description" pInputTextarea [(ngModel)]="product.descripcion" required rows="3" cols="20"></textarea>
+                    <textarea id="description" pInputTextarea [(ngModel)]="itemNew.descripcion" required rows="3" cols="20" [ngClass]="{'ng-invalid ng-dirty' : submitted && !itemNew.descripcion}"></textarea>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !itemNew.descripcion">Descripción es requerida.</small>
                 </div>
+
                 <div class="field">
-                    <label class="mb-3">Categoria</label>
+                    <label class="mb-3">Tipo</label>
                     <div class="formgrid grid">
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton id="category1" name="category" value="Accessories" [(ngModel)]="product.subgrupo"></p-radioButton>
-                            <label for="category1">Accesorios</label>
-                        </div>
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton id="category2" name="category" value="Clothing" [(ngModel)]="product.subgrupo"></p-radioButton>
-                            <label for="category2">Ropa</label>
-                        </div>
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton id="category3" name="category" value="Electronics" [(ngModel)]="product.subgrupo"></p-radioButton>
-                            <label for="category3">Tecnologia</label>
-                        </div>
-                        <div class="field-radiobutton col-6">
-                            <p-radioButton id="category4" name="category" value="Fitness" [(ngModel)]="product.subgrupo"></p-radioButton>
-                            <label for="category4">Fitness</label>
+                        <div class="field-dropdown-grid col-6">
+                            <p-dropdown id="selectTipo" [options]="tipoProductos" [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedTipo.codigo}"
+                                        [(ngModel)]="selectedTipo"
+                                        optionLabel="nombre"
+                                        [filter]="true"
+                                        filterBy="name"
+                                        [showClear]="true"
+                                        placeholder="Seleccione tipo">
+                            </p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedTipo.codigo">Tipo de producto es requerido.</small>
                         </div>
                     </div>
                 </div>
 
+                <div class="field">
+                    <label class="mb-3">Categoria</label>
+                    <div class="formgrid grid">
+                        <div class="field-dropdown-grid col-6">
+                            <p-dropdown id="selectGrupo" [options]="grupos" (onChange)="cambioGrupo($event)"
+                                        [(ngModel)]="selectedGrupo" [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedGrupo.codigo}"
+                                        optionLabel="nombre"
+                                        [filter]="true"
+                                        filterBy="name"
+                                        [showClear]="true"
+                                        placeholder="Seleccione grupo">
+                            </p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedGrupo.codigo">Grupo es requerido.</small>
+                        </div>
+                        <div class="field-dropdown-grid col-6">
+                            <p-dropdown id="selectSubgrupo" [options]="subgrupos"
+                                        [(ngModel)]="selectedSubgrupo" [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedSubgrupo.codigo}"
+                                        optionLabel="nombre"
+                                        [filter]="true"
+                                        filterBy="name"
+                                        [showClear]="true"
+                                        placeholder="Seleccione subgrupo">
+                            </p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedSubgrupo.codigo">Subgrupo es requerido.</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="formgrid grid">
+                    <div class="field col">
+                        <label for="price">Cantidad</label>
+                        <p-inputNumber id="cantidad" [(ngModel)]="itemNew.cantidad"></p-inputNumber>
+                    </div>
+                </div>
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="price">Precio</label>
-                        <p-inputNumber id="price" [(ngModel)]="product.precio" mode="currency" currency="CLP" locale="en-CL"></p-inputNumber>
+                        <p-inputNumber id="precio" [(ngModel)]="itemNew.precio" mode="currency" currency="CLP" locale="en-CL"></p-inputNumber>
                     </div>
                 </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="save()"></button>
             </ng-template>
         </p-dialog>
 

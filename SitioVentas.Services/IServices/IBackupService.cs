@@ -9,7 +9,7 @@ namespace SitioVentas.Services.IServices
 {
     public interface IBackupService
     {
-        SaveFileResult SaveFileDisk(ArchivoDto arch);
-        ArchivoDto GetFileDisc(ArchivoDto arch);
+        SaveFileResult SaveFileDisk(FotoDto arch);
+        FotoDto GetFileDisc(FotoDto arch);
     }
 }

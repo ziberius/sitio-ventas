@@ -51,18 +51,40 @@ namespace SitioVentas.Controllers
             return paginatedData;
         }
 
-        [HttpPost("item")]
+        [HttpPost]
         //[Authorize(Roles = RoleConstants.MANTWEB_NOSOTROS_ADMIN)]
-        public async Task<ItemDto> NewsInfoItem([FromBody] ItemDto newsInfoItemDto)
+        public async Task<ItemDto> SaveProduct([FromBody] ItemDto producto)
         {
             try
             {
-                return await _itemService.Insert(newsInfoItemDto);
+                return await _itemService.Insert(producto);
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception(ex.Message,ex);
             }
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ItemDto>> UpdateProduct(int id, [FromBody] ItemDto producto)
+        {
+            try
+            {
+                var update = await _itemService.Update(id, producto);
+                if (update == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok(update);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
     }
 }

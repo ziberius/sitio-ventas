@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IProducto } from '../api/producto';
+import { IProducto } from '../api/producto.interface';
 import { Observable } from 'rxjs';
 import { Product } from '../api/product';
 
@@ -39,5 +39,14 @@ export class ProductService {
             .toPromise()
             .then(res => res.data as Product[])
             .then(data => data);
+    }
+
+    createProduct(data: IProducto): Observable<IProducto> {
+        return this.http.post<IProducto>(this.apiUrl, data, { params: { blockui: true.toString() } });
+    }
+
+    updateProduct(data: IProducto): Observable<HttpResponse<IProducto>> {
+        const URL = `${this.apiUrl}/${data.id}`;
+        return this.http.put<HttpResponse<IProducto>>(URL, data, { params: { blockui: true.toString() } });
     }
 }

@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\demo\model\producto.model.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ClientApp\src\app\demo\directives\" />
     <Folder Include="Imagenes\" />
   </ItemGroup>
@@ -30,6 +34,10 @@
   <ItemGroup>
     <ProjectReference Include="..\SitioVentas.Dto\SitioVentas.Dto.csproj" />
     <ProjectReference Include="..\SitioVentas.Services\SitioVentas.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\demo\model\producto.model.ts" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

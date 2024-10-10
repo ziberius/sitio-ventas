@@ -13,6 +13,11 @@ import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { ConvertirStockDirective } from './demo/directives/convertir-stock.directive';
 import { MenubarModule } from 'primeng/menubar';
+import { GrupoService } from './demo/service/grupo.service';
+import { SubgrupoService } from './demo/service/subgrupo.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
+import { TipoService } from './demo/service/tipo.service';
 
 
 @NgModule({
@@ -22,12 +27,14 @@ import { MenubarModule } from 'primeng/menubar';
     imports: [
         AppRoutingModule,
         AppLayoutModule,
+        ConfirmDialogModule,
         MenubarModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService
+        PhotoService, ProductService, GrupoService, SubgrupoService, ConfirmationService
+        , TipoService
     ],
     bootstrap: [AppComponent]
 })

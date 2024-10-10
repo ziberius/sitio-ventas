@@ -8,6 +8,7 @@
         public string? Descripcion { get; set; }
         public int Tipo { get; set; }
         public int Subgrupo { get; set; }
+        public string SubgrupoNombre { get; set; }
         public List<FotoDto> Fotos { get; set; }
 
         public DateTime? Creado { get; set; }

@@ -51,7 +51,7 @@ namespace SitioVentas.Services.Services
         }
 
 
-        private string CrearRutaDisco(string ruta, ArchivoDto arch)
+        private string CrearRutaDisco(string ruta, FotoDto arch)
         {
             string rutaFinal = ruta + Path.DirectorySeparatorChar + arch.ItemId.ToString();
             if (!Directory.Exists(rutaFinal))
@@ -62,10 +62,10 @@ namespace SitioVentas.Services.Services
         }
 
 
-        public SaveFileResult SaveFileDisk(ArchivoDto arch)
+        public SaveFileResult SaveFileDisk(FotoDto arch)
         {
             _logger.LogInformation("**** GUARDANDO ARCHIVO *****");
-            _logger.LogInformation($"[BackupService] GUARDANDO ARCHIVO NOMBRE: {arch.NombreArchivo}");
+            _logger.LogInformation($"[BackupService] GUARDANDO ARCHIVO NOMBRE: {arch.Nombre}");
             SaveFileResult result = new SaveFileResult() { Ruta = "", Exitoso = false };
             string rutaDisco = "";
             try
@@ -73,8 +73,8 @@ namespace SitioVentas.Services.Services
                 rutaDisco = GenerarRutaDisco(arch.FechaCreacion);
                 string rutaFinal;
                 rutaFinal = CrearRutaDisco(rutaDisco, arch);
-                var archivo = Convert.FromBase64String(arch.ContenidoArchivoB64);
-                File.WriteAllBytes(rutaFinal + Path.DirectorySeparatorChar + arch.NombreArchivo, archivo);
+                var archivo = Convert.FromBase64String(arch.Archivo);
+                File.WriteAllBytes(rutaFinal + Path.DirectorySeparatorChar + arch.Nombre, archivo);
                 result.Exitoso = true;
                 result.Ruta = rutaFinal;
 
@@ -89,15 +89,15 @@ namespace SitioVentas.Services.Services
             return result;
         }
 
-        public ArchivoDto GetFileDisc(ArchivoDto arch)
+        public FotoDto GetFileDisc(FotoDto arch)
         {
             _logger.LogInformation("**** DESCARGANDO ARCHIVO *****");
-            _logger.LogInformation($"[BackupService] BUSCANDO ARCHIVO LOCAL NOMBRE: {arch.NombreArchivo}");
+            _logger.LogInformation($"[BackupService] BUSCANDO ARCHIVO LOCAL NOMBRE: {arch.Nombre}");
             try
             {
                 _logger.LogInformation("Current directory:" + Directory.GetCurrentDirectory());
-                var archivo = File.ReadAllBytes(arch.Ruta + Path.DirectorySeparatorChar + arch.NombreArchivo);
-                arch.ContenidoArchivoB64 = Convert.ToBase64String(archivo);
+                var archivo = File.ReadAllBytes(arch.Ruta + Path.DirectorySeparatorChar + arch.Nombre);
+                arch.Archivo = Convert.ToBase64String(archivo);
 
             }
             catch (Exception ex)

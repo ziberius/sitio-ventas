@@ -9,18 +9,23 @@ namespace SitioVentas.Repository.Helpers.Mappers
 {
     public class ItemMapper
     {
-        public static Item InfoDtoToEntity(ItemDto itemDto)
+        public static Item DtoToEntity(ItemDto itemDto)
         {
             Item item = new Item();
             item.Id = itemDto.Id;
             item.Descripcion = itemDto.Descripcion;
             item.Nombre = itemDto.Nombre;
             item.Tipo = itemDto.Tipo;
+            item.Codigo = itemDto.Codigo;
+            item.Subgrupo = itemDto.Subgrupo;
+            item.Precio = itemDto.Precio;
+            item.Activo = itemDto.Activo;
+            item.Cantidad = itemDto.Cantidad;
 
             return item;
         }
 
-        public static ItemDto InfoEntityToDto(Item item)
+        public static ItemDto EntityToDto(Item item)
         {
             ItemDto itemDto = new ItemDto();
             itemDto.Id = item.Id;
@@ -63,16 +68,5 @@ namespace SitioVentas.Repository.Helpers.Mappers
             return foto;
         }
 
-        public static ArchivoDto FotoDtoToArchivoFtp(FotoDto fotoDto)
-        {
-            var archivo = new ArchivoDto();
-            archivo.NombreArchivo = fotoDto.Nombre;
-            archivo.Extension = fotoDto.Tipo;
-            archivo.Ruta = fotoDto.Ruta;
-            archivo.ContenidoArchivoB64 = fotoDto.Archivo;
-            archivo.ItemId = fotoDto.ItemId;
-
-            return archivo;
-        }
     }
 }

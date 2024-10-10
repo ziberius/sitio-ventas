@@ -29,6 +29,9 @@ builder.Services.AddTransient<IFotoRepository, FotoRepository>();
 //Servicios
 builder.Services.AddTransient<IItemService,ItemService>();
 builder.Services.AddTransient<IBackupService, BackupService>();
+builder.Services.AddTransient<IGrupoService, GrupoService>();
+builder.Services.AddTransient<ISubgrupoService, SubgrupoService>();
+builder.Services.AddTransient<ITipoService, TipoService>();
 
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
 builder.Services.AddRazorPages();

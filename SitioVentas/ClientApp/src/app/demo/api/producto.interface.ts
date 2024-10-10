@@ -1,12 +1,14 @@
 import { IFoto } from './foto';
 
 export interface IProducto {
-    id?: string;
+    id: number;
     codigo?: string;
     nombre?: string;
     descripcion?: string;
     precio?: number;
-    subgrupo?: string;
+    subgrupo?: number;
+    subgrupoNombre?: string;
     cantidad?: number;
-    fotos?: IFoto[];
+    tipo?: number;
+    fotos: IFoto[];
 }
