@@ -165,11 +165,11 @@ export class CrudComponent implements OnInit {
             this.messageService.add({ severity: 'error', summary: 'Validaciones', detail: 'Debe ingresar una descripción', life: 3000 });
             return false;
         }
-        if (!this.itemNew.cantidad == undefined) {
+        if (this.itemNew.cantidad == undefined || this.itemNew.cantidad == null) {
             this.messageService.add({ severity: 'error', summary: 'Validaciones', detail: 'Debe ingresar una cantidad', life: 3000 });
             return false;
         }
-        if (this.itemNew.precio == undefined) {
+        if (this.itemNew.precio == undefined || this.itemNew.precio == null) {
             this.messageService.add({ severity: 'error', summary: 'Validaciones', detail: 'Debe ingresar un precio', life: 3000 });
             return false;
         }

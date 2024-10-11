@@ -92,7 +92,9 @@
                                   customUpload="true" (uploadHandler)="subirFoto($event)" (onRemove)="eliminarFoto($event)" (onClear)="eliminarFotos()" (onSelect)="seleccionarFotos($event)" invalidFileTypeMessageSummary="{0}: Tipo de archivo inválido,"
                                   invalidFileTypeMessageDetail="Solo se permiten imágenes" maxFileSize="{{maxSize}}" multiple="multiple"
                                   invalidFileSizeMessageSummary="{0}: Tamaño supera el límite," invalidFileSizeMessageDetail="Tamaño máximo es {0}."
-                                  pTooltip="Se recomienda imagen con resolución 1920x1080 o 1080x1920. Tamaño máximo 3 Mb.">
+                                  pTooltip="Se recomienda imagen con resolución 1920x1080 o 1080x1920. Tamaño máximo 3 Mb."
+                                  [ngClass]="{'ng-invalid ng-dirty' : submitted && itemNew.fotos?.length === 0}"
+                                  >
                     </p-fileUpload>
                     <div *ngIf="this.itemNew?.fotos?.length > 0" class="p-field p-col-12 p-md-12">
                         <p-table [value]="this.itemNew.fotos" [autoLayout]="true">
@@ -115,6 +117,7 @@
                             </ng-template>
                         </p-table>
                     </div>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && itemNew.fotos?.length === 0">Debe adjuntar una foto.</small>
                 </div>
                 <div class="field">
                     <label for="name">Código</label>
@@ -179,13 +182,15 @@
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="price">Cantidad</label>
-                        <p-inputNumber id="cantidad" [(ngModel)]="itemNew.cantidad"></p-inputNumber>
+                        <p-inputNumber id="cantidad" [(ngModel)]="itemNew.cantidad" [ngClass]="{'ng-invalid ng-dirty' : submitted && itemNew.cantidad == null}"></p-inputNumber>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && itemNew.cantidad == null">Cantidad es requerido.</small>
                     </div>
                 </div>
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="price">Precio</label>
-                        <p-inputNumber id="precio" [(ngModel)]="itemNew.precio" mode="currency" currency="CLP" locale="en-CL"></p-inputNumber>
+                        <p-inputNumber id="precio" [(ngModel)]="itemNew.precio" mode="currency" currency="CLP" locale="en-CL" [ngClass]="{'ng-invalid ng-dirty' : submitted && itemNew.precio == null}"></p-inputNumber>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && itemNew.precio == null">Precio es requerido.</small>
                     </div>
                 </div>
             </ng-template>

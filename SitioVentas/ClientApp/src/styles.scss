@@ -145,3 +145,7 @@ $gutter: 1rem; //for primeflex grid system
     max-width: 100%;
     height: auto;
 }
+
+.ng-dirty.ng-invalid .p-fileupload-content {
+    border-color: #e24c4c;
+}
