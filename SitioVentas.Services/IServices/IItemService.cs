@@ -11,8 +11,6 @@ namespace SitioVentas.Services.IServices
     {
         Task<List<ItemDto>> GetAll();
 
-        Task<ItemDto> Get(int Id);
-
         Task<bool> Delete(int Id);
 
         Task<ItemDto> Insert(ItemDto item);
@@ -26,5 +24,6 @@ namespace SitioVentas.Services.IServices
         Task<List<ItemDto>> GetPaginatedFiltered(PaginatedFilteredRequestDto request);
 
         Task<int> GetTotalNoticias();
+
     }
 }

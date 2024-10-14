@@ -38,14 +38,14 @@ namespace SitioVentas.Repository.Generics
         #endregion
 
 
-        public virtual async Task<bool> DeleteLogico(dynamic Id, string UserLastUpdate = "Sin Asignar")
+        public virtual async Task<bool> DeleteLogico(dynamic Id)
         {
             TEntity m = new TEntity();
             m = this.SetPrimaryKey(Id, m);
             string sql =
                STRING_TYPE == (typeof(TEntity).GetProperty(this.PrimaryKeyName).GetValue(m, null)).GetType().FullName ?
-                   string.Format("UPDATE {0} SET FechaActualizacion = getdate(), Activo = 0, UsuarioActualizador = '{3}' WHERE {1} = '{2}'", this.TableName, this.PrimaryKeyName, m.GetType().GetProperty(this.PrimaryKeyName).GetValue(m, null).ToString(), UserLastUpdate) :
-                   string.Format("UPDATE {0} SET FechaActualizacion = getdate(), Activo = 0, UsuarioActualizador = '{3}' WHERE {1} = {2}", this.TableName, this.PrimaryKeyName, m.GetType().GetProperty(this.PrimaryKeyName).GetValue(m, null).ToString(), UserLastUpdate);
+                   string.Format("UPDATE {0} SET Actualizado = CURRENT_TIMESTAMP, Activo = 0 WHERE {1} = '{2}'", this.TableName, this.PrimaryKeyName, m.GetType().GetProperty(this.PrimaryKeyName).GetValue(m, null).ToString()) :
+                   string.Format("UPDATE {0} SET Actualizado = CURRENT_TIMESTAMP, Activo = 0 WHERE {1} = {2}", this.TableName, this.PrimaryKeyName, m.GetType().GetProperty(this.PrimaryKeyName).GetValue(m, null).ToString());
 
             await ExecutableWrapper.ExecuteWrapperAsynConn<IEnumerable<dynamic>>(ConString, async (_c) =>
             {

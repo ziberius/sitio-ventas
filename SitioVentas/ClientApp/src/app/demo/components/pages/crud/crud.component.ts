@@ -3,7 +3,7 @@ import { IProducto } from 'src/app/demo/api/producto.interface';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/demo/service/product.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FileUpload } from 'primeng/fileupload';
 import { Foto, IFoto } from '../../../api/foto';
 import { IGrupo } from '../../../api/grupo';
@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { Producto } from '../../../model/producto.model';
 import { TipoService } from '../../../service/tipo.service';
 import { ITipo } from '../../../api/tipo.interface';
+import { concatMap, from } from 'rxjs';
 
 @Component({
     templateUrl: './crud.component.html',
@@ -39,6 +40,7 @@ export class CrudComponent implements OnInit {
     selectedTipo: ITipo = {};
 
     product: Producto = new Producto();
+
     itemNew: Producto = new Producto();
     fotos: IFoto[] = [];
 
@@ -52,7 +54,12 @@ export class CrudComponent implements OnInit {
     statuses: any[] = [];
     rowsPerPageOptions = [5, 10, 20];
 
+    editando: Boolean = false;
+
     public maxSize: number = 0;
+
+    displayFotos: boolean = false;
+    currentFoto: Foto = new Foto();
 
     constructor(
         private productService: ProductService
@@ -68,16 +75,8 @@ export class CrudComponent implements OnInit {
 
     ngOnInit() {
         this.maxSize = environment.maxSize;
-        this.productService.getProductos().subscribe(data => {
-            data.forEach(item => {
-                var foto = item.fotos !== undefined?item.fotos[0]:null;
-                if (foto) {
-                    let objectURL = 'data:' + foto.tipo + ';base64,' + foto.archivo;
-                    foto.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-                }
-            });
-            this.products = data
-        });
+
+        this.cargarProductos();
 
         this.grupoService.getGrupos().subscribe(data => {
             this.grupos = data;
@@ -113,8 +112,22 @@ export class CrudComponent implements OnInit {
         ];
     }
 
+    cargarProductos() {
+        this.productService.getProductos().subscribe(data => {
+            data.forEach(item => {
+                var foto = item.fotos !== undefined ? item.fotos[0] : null;
+                if (foto) {
+                    let objectURL = 'data:' + foto.tipo + ';base64,' + foto.archivo;
+                    foto.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+                }
+            });
+            this.products = data
+        });
+    }
+
     openNew() {
         this.itemNew = new Producto();
+        this.editando = false;
         this.submitted = false;
         this.productDialog = true;
     }
@@ -124,7 +137,38 @@ export class CrudComponent implements OnInit {
     }
 
     editProduct(product: IProducto) {
+        this.editando = true;
         this.itemNew = { ...product };
+
+        const subgrupo = this.subgruposTotal.find(x => x.id == product.subgrupo)
+
+        const findGrupo = this.grupos.find(x => x.id == subgrupo?.grupoId);
+        if (findGrupo) {
+            this.selectedGrupo = findGrupo;
+        }
+
+        this.subgrupos = this.selectedGrupo !== null ? this.subgruposTotal.filter(x => x.grupoId == this.selectedGrupo.id) : [];
+
+        const findSubgrupo = this.subgrupos.find(x => x.id == product.subgrupo);
+        if (findSubgrupo) {
+            this.selectedSubgrupo = findSubgrupo;
+        }
+
+        const findTipo = this.tipoProductos.find(x => x.id == product.tipo);
+        if (findTipo) {
+            this.selectedTipo = findTipo;
+        }
+
+        this.productService.getFotosProducto(product.id).subscribe({
+            next: (data) => {
+                this.itemNew.fotos = data;
+            },
+            error: (error) => {
+                console.log(error);
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al traer fotos de producto', life: 3000 });
+            }
+        });
+        
         this.productDialog = true;
     }
 
@@ -136,14 +180,41 @@ export class CrudComponent implements OnInit {
     confirmDeleteSelected() {
         this.deleteProductsDialog = false;
         this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+
+        const ids = this.selectedProducts.map(producto => producto.id);
+
+        from(ids).pipe(
+            concatMap(id => this.productService.deleteProduct(id))
+        ).subscribe({
+            next: (data) => {
+                console.log('Resultado:', data);
+            },
+            error:(error) => {
+                console.error('Error:', error);
+            },
+            complete: () => {
+                console.log('Todas las llamadas completadas');
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Productos eliminados', life: 3000 });
+            }
+        });
+
+        
         this.selectedProducts = [];
     }
 
     confirmDelete() {
         this.deleteProductDialog = false;
-        this.products = this.products.filter(val => val.id !== this.product.id);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+        const deleteId = this.itemNew.id;
+        this.productService.deleteProduct(deleteId).subscribe({
+            next: (data) => {
+                this.products = this.products.filter(val => val.id != deleteId);
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Producto eliminado', life: 3000 });
+            },
+            error: (error) => {
+                console.log(error);
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al eliminar producto', life: 3000 });
+            }
+        });
         this.itemNew = new Producto();
     }
 
@@ -229,18 +300,32 @@ export class CrudComponent implements OnInit {
         this.itemNew.tipo = this.selectedTipo.id;
 
         //Guardar
+        if (this.editando) {
 
-        this.productService.createProduct(this.itemNew).subscribe({
-            complete: () => {
-                this.messageService.add({ severity: 'success', summary: 'Correcto', detail: 'Producto registrado.', life: 3000 });
-
-            }
-            , error: (error) => {
-                console.log(error);
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al guardar producto.', life: 3000 });
-            }
-        });
-
+            this.productService.updateProduct(this.itemNew).subscribe({
+                next: (data) => {
+                    this.cargarProductos();
+                    this.productDialog = false;
+                    this.messageService.add({ severity: 'success', summary: 'Correcto', detail: 'Producto actualizado.', life: 3000 });
+                }
+                , error: (error) => {
+                    console.log(error);
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar producto.', life: 3000 });
+                }
+            });
+        } else {
+            this.productService.createProduct(this.itemNew).subscribe({
+                next: (data) => {
+                    this.cargarProductos();
+                    this.productDialog = false;
+                    this.messageService.add({ severity: 'success', summary: 'Correcto', detail: 'Producto registrado.', life: 3000 });
+                }
+                , error: (error) => {
+                    console.log(error);
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al guardar producto.', life: 3000 });
+                }
+            });
+        }
     }
 
     findIndexById(id: number): number {
@@ -316,7 +401,7 @@ export class CrudComponent implements OnInit {
     }
 
     cambioGrupo(event: any) {
-        this.subgrupos = this.selectedGrupo !== null?this.subgruposTotal.filter(x => x.grupoid = this.selectedGrupo.id):[];
+        this.subgrupos = this.selectedGrupo !== null?this.subgruposTotal.filter(x => x.grupoId == this.selectedGrupo.id):[];
     }
 
     eliminarArchivo(archivo: Foto) {
@@ -331,5 +416,36 @@ export class CrudComponent implements OnInit {
         link.href = 'data:' + archivo.tipo + ';base64,' + archivo.archivo;
         link.download = archivo.nombre;
         link.click();
+    }
+
+    moverArriba(index: number) {
+        if (index > 0) {
+            const temp = this.itemNew.fotos[index];
+            this.itemNew.fotos[index] = this.itemNew.fotos[index - 1];
+            this.itemNew.fotos[index - 1] = temp;
+        }
+    }
+
+    // Mueve el archivo una posición hacia abajo
+    moverAbajo(index: number) {
+        if (index < this.itemNew.fotos.length - 1) {
+            const temp = this.itemNew.fotos[index];
+            this.itemNew.fotos[index] = this.itemNew.fotos[index + 1];
+            this.itemNew.fotos[index + 1] = temp;
+        }
+    }
+
+    get currentImage(): SafeUrl {
+        return this.currentFoto.imageUrl;
+    }
+
+    mostrarArchivo(archivo: Foto) {
+        this.displayFotos = true;
+        let objectURL = 'data:' + archivo.tipo + ';base64,' + archivo.archivo;
+        this.currentFoto.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    }
+
+    ocultarArchivo() {
+        this.displayFotos = false;
     }
 }

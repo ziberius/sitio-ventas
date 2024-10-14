@@ -10,7 +10,7 @@ namespace SitioVentas.Repository.Generics
     {
         Task<IEnumerable<TEntity>> GetAll();
         Task<TEntity> GetById(dynamic Id);
-        Task<bool> DeleteLogico(dynamic Id, string UserLastUpdate); 
+        Task<bool> DeleteLogico(dynamic Id); 
         Task<TEntity> Update(TEntity input);
         Task<TEntity> Insert(TEntity input);
         Task<TEntity> InsertOrUpdate(TEntity input);

@@ -46,15 +46,15 @@ namespace SitioVentas.Repository.Generics
             return await _c.GetAllAsync<TEntity>(transaction: Transaction).ConfigureAwait(false);
         }
 
-        public async Task<bool> DeleteLogico(dynamic Id, string UserLastUpdate = "Sin Asignar")
+        public async Task<bool> DeleteLogico(dynamic Id)
         {
             TEntity m = new TEntity();
             m = this.SetPrimaryKey(Id, m);
 
             string sql =
                STRING_TYPE == (typeof(TEntity).GetProperty(this.PrimaryKeyName).GetValue(m, null)).GetType().FullName ?
-                   string.Format("UPDATE {0} SET AuditLastUpdateDate = getdate(), AuditNotDeleted = 0, AuditUserLastUpdate = '{3}' WHERE {1} = '{2}'", this.TableName, this.PrimaryKeyName, m.GetType().GetProperty(this.PrimaryKeyName).GetValue(m, null).ToString(), UserLastUpdate) :
-                   string.Format("UPDATE {0} SET AuditLastUpdateDate = getdate(), AuditNotDeleted = 0, AuditUserLastUpdate = '{3}' WHERE {1} = {2}", this.TableName, this.PrimaryKeyName, m.GetType().GetProperty(this.PrimaryKeyName).GetValue(m, null).ToString(), UserLastUpdate);
+                   string.Format("UPDATE {0} SET AuditLastUpdateDate = CURRENT_TIMESTAMP, AuditNotDeleted = 0 WHERE {1} = '{2}'", this.TableName, this.PrimaryKeyName, m.GetType().GetProperty(this.PrimaryKeyName).GetValue(m, null).ToString()) :
+                   string.Format("UPDATE {0} SET AuditLastUpdateDate = CURRENT_TIMESTAMP, AuditNotDeleted = 0 WHERE {1} = {2}", this.TableName, this.PrimaryKeyName, m.GetType().GetProperty(this.PrimaryKeyName).GetValue(m, null).ToString());
 
             await _c.QueryAsync(sql, transaction: Transaction).ConfigureAwait(false);
 

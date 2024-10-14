@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { IProducto } from '../api/producto.interface';
 import { Observable } from 'rxjs';
 import { Product } from '../api/product';
+import { IFoto } from '../api/foto';
 
 @Injectable()
 export class ProductService {
@@ -18,6 +19,11 @@ export class ProductService {
 
     getProductos(): Observable<IProducto[]> {
         return this.http.get<IProducto[]>(this.apiUrl);
+    }
+
+    getFotosProducto(id: number): Observable<IFoto[]> {
+        const URL = `${this.apiUrl}/fotos/${id}`;
+        return this.http.get<IFoto[]>(URL);
     }
 
     getProducts() {
@@ -48,5 +54,10 @@ export class ProductService {
     updateProduct(data: IProducto): Observable<HttpResponse<IProducto>> {
         const URL = `${this.apiUrl}/${data.id}`;
         return this.http.put<HttpResponse<IProducto>>(URL, data, { params: { blockui: true.toString() } });
+    }
+
+    deleteProduct(id: number): Observable<IProducto> {
+        const URL = `${this.apiUrl}/${id}`;
+        return this.http.delete<IProducto>(URL);
     }
 }

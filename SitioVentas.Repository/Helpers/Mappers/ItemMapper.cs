@@ -37,6 +37,7 @@ namespace SitioVentas.Repository.Helpers.Mappers
             itemDto.Activo = item.Activo;
             itemDto.Precio = item.Precio;
             itemDto.Cantidad = item.Cantidad;
+            itemDto.Subgrupo = item.Subgrupo;
 
             return itemDto;
         }

@@ -10,9 +10,6 @@
                     </div>
                 </ng-template>
 
-                <ng-template pTemplate="right">
-                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
-                </ng-template>
             </p-toolbar>
 
             <p-table #dt [value]="products" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} productos" [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
@@ -21,7 +18,7 @@
                         <h5 class="m-0">Gestionar Productos</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..." class="w-full sm:w-auto" />
                         </span>
                     </div>
                 </ng-template>
@@ -93,8 +90,7 @@
                                   invalidFileTypeMessageDetail="Solo se permiten imágenes" maxFileSize="{{maxSize}}" multiple="multiple"
                                   invalidFileSizeMessageSummary="{0}: Tamaño supera el límite," invalidFileSizeMessageDetail="Tamaño máximo es {0}."
                                   pTooltip="Se recomienda imagen con resolución 1920x1080 o 1080x1920. Tamaño máximo 3 Mb."
-                                  [ngClass]="{'ng-invalid ng-dirty' : submitted && itemNew.fotos?.length === 0}"
-                                  >
+                                  [ngClass]="{'ng-invalid ng-dirty' : submitted && itemNew.fotos?.length === 0}">
                     </p-fileUpload>
                     <div *ngIf="this.itemNew?.fotos?.length > 0" class="p-field p-col-12 p-md-12">
                         <p-table [value]="this.itemNew.fotos" [autoLayout]="true">
@@ -103,6 +99,7 @@
                                     <th>Nombre</th>
                                     <th>Tipo</th>
                                     <th style="width: 12%;">Acciones</th>
+                                    <th style="width: 12%;">Orden</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-archivo let-index="rowIndex">
@@ -112,6 +109,11 @@
                                     <td style="width: 12%;">
                                         <button pButton pRipple icon="pi pi-download" class="p-button-rounded p-button-warning" (click)="descargarArchivo(archivo)"></button>
                                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-secondary" (click)="eliminarArchivo(archivo)"></button>
+                                        <button pButton pRipple icon="pi pi-eye" (click)="mostrarArchivo(archivo)" class="p-button-rounded p-button-primary"></button>
+                                    </td>
+                                    <td style="width: 12%;">
+                                        <button pButton icon="pi pi-arrow-up" class="p-button-rounded p-button-secondary" (click)="moverArriba(index)" [disabled]="index === 0"></button>
+                                        <button pButton icon="pi pi-arrow-down" class="p-button-rounded p-button-secondary" (click)="moverAbajo(index)" [disabled]="index === itemNew.fotos.length - 1"></button>
                                     </td>
                                 </tr>
                             </ng-template>
@@ -204,7 +206,7 @@
         <p-dialog [(visible)]="deleteProductDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="product">Estas seguro que quiere eliminar el producto <b>{{product.nombre}}</b>?</span>
+                <span *ngIf="product">¿Estas seguro que quiere eliminar el producto <b>{{product.nombre}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteProductDialog = false"></button>
@@ -215,12 +217,23 @@
         <p-dialog [(visible)]="deleteProductsDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Are you sure you want to delete selected products?</span>
+                <span>¿Estas seguro que quieres eliminar los productos seleccionados?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteProductsDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteSelected()"></button>
             </ng-template>
         </p-dialog>
+
+        <div *ngIf="displayFotos" class="div-foto">
+            <div>
+
+            </div>
+            <div class="div-foto-content">
+                <img [src]="currentImage" alt="Image" class="div-foto-image">
+            </div>
+            <button class="close-button" pButton pRipple type="button" icon="pi pi-times" (click)="ocultarArchivo()"></button>
+        </div>
+
     </div>
 </div>

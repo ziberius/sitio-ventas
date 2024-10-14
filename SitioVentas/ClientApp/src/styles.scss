@@ -149,3 +149,41 @@ $gutter: 1rem; //for primeflex grid system
 .ng-dirty.ng-invalid .p-fileupload-content {
     border-color: #e24c4c;
 }
+
+.div-foto {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+}
+
+.div-foto-content {
+    position: relative;
+    width: 80%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.div-foto-image {
+    max-width: 90%;
+    max-height: 90%;
+}

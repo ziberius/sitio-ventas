@@ -32,7 +32,7 @@ namespace SitioVentas.Services.Services
 
         public async Task<List<GrupoDto>> GetAll()
         {
-            var list =  (await _grupoRepository.GetAll()).ToList();
+            var list =  (await _grupoRepository.GetAllByExpression(x => x.Activo == true)).ToList();
             List<GrupoDto> listDto = new List<GrupoDto>();
             GrupoDto grupoDto = new GrupoDto();
             foreach(var grupo in list)

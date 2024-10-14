@@ -14,39 +14,32 @@ namespace SitioVentas.Services.Services
     public class ItemService: IItemService
     {
         private readonly IItemRepository _itemRepository;
-        private readonly ISubGrupoRepository _subgrupoRepository;
-        private readonly ITipoRepository _tipoRepository;
+        private readonly ISubgrupoService _subgrupoService;
         private readonly IFotoRepository _fotoRepository;
         private readonly IBackupService _backupService;
 
         public ItemService(IItemRepository itemRepository
                 ,IGrupoRepository grupoRepository
-                ,ISubGrupoRepository subGrupoRepository
-                ,ITipoRepository tipoRepository
+                , ISubgrupoService subgrupoService
+                , ITipoRepository tipoRepository
                 ,IBackupService backupService
                 , IFotoRepository fotoRepository) { 
             _itemRepository = itemRepository;
             _fotoRepository = fotoRepository;
-            _tipoRepository = tipoRepository;
-            _subgrupoRepository = subGrupoRepository;
+            _subgrupoService = subgrupoService;
             _backupService = backupService;
         }
 
-        public Task<bool> Delete(int Id)
+        public async Task<bool> Delete(int Id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<ItemDto> Get(int Id)
-        {
-            throw new NotImplementedException();
+            return await _itemRepository.DeleteLogico(Id);
         }
 
         public async Task<List<ItemDto>> GetAll()
         {
             List<ItemDto> list = new List<ItemDto>();
-            var itemList = (await _itemRepository.GetAll()).ToList();
-            var subGrupos = (await _subgrupoRepository.GetAll()).ToList();
+            var itemList = (await _itemRepository.GetAllByExpression(x => x.Activo == true)).ToList();
+            var subGrupos = (await _subgrupoService.GetAll()).ToList();
             if (itemList != null)
             {
                 foreach (var item in itemList)
@@ -71,9 +64,18 @@ namespace SitioVentas.Services.Services
             return list;
         }
 
-        public Task<List<FotoDto>> GetFotos(int Id)
+        public async Task<List<FotoDto>> GetFotos(int Id)
         {
-            throw new NotImplementedException();
+            List<FotoDto> result = new List<FotoDto>();
+            FotoDto fotoDto;
+            var item = await _itemRepository.GetById(Id);
+            var fotos = (await _fotoRepository.GetAllByExpression(x => x.ItemId == Id)).OrderBy(x => x.Prioridad);
+            foreach (var foto in fotos)
+            {
+                fotoDto = BuscarFoto(item.Creado, foto);
+                result.Add(fotoDto);
+            }
+            return result;
         }
 
         private FotoDto BuscarFoto(DateTime? fechaCreacion, Foto foto)
@@ -123,6 +125,8 @@ namespace SitioVentas.Services.Services
         {
             Foto foto;
             var producto = ItemMapper.DtoToEntity(item);
+            producto.Creado = DateTime.Now;
+            producto.Activo = true;
             producto = await _itemRepository.Insert(producto);
             item.Id = producto.Id;
             foreach (var fotoDto in item.Fotos)
@@ -155,22 +159,24 @@ namespace SitioVentas.Services.Services
         public async Task<ItemDto> Update(int id, ItemDto itemDto)
         {
             Foto foto;
-            var objItem = await Get(id);
+            var objItem = await _itemRepository.GetById(id);
             if (objItem == null) return null;
-            itemDto.Creado = objItem.Creado ?? DateTime.Now;
+            itemDto.Creado = objItem.Creado;
             var item = ItemMapper.DtoToEntity(itemDto);
             item.Actualizado = DateTime.Now;
             var result = (await _itemRepository.Update(item));
             if (result != null)
             {
                 var fotosBackup = await _fotoRepository.GetAllByExpression(x => x.ItemId == id);
+                var cont = 1;
                 foreach (var fotoDto in itemDto.Fotos)
                 {
+                    fotoDto.Prioridad = cont++;
                     foto = await GuardarFoto(item, fotoDto);
                 }
                 foreach (var fotoDel in fotosBackup)
                 {
-                    var delFotos = await _fotoRepository.ExecuteCommand("DELETE FROM TbFoto where Id = @Id", new { fotoDel.Id });
+                    var delFotos = await _fotoRepository.ExecuteCommand("DELETE FROM foto where Id = @Id", new { fotoDel.Id });
                 }
             }
             else

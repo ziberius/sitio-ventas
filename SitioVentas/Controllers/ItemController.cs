@@ -86,5 +86,24 @@ namespace SitioVentas.Controllers
             }
         }
 
+        [HttpGet("fotos/{itemId}")]
+        public async Task<List<FotoDto>> GetFotos(int itemId)
+        {
+            return await _itemService.GetFotos(itemId);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<bool> DeleteProduct(int id)
+        {
+            try
+            {
+                return await _itemService.Delete(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message,ex);
+            }
+        }
+
     }
 }

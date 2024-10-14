@@ -32,7 +32,7 @@ namespace SitioVentas.Services.Services
 
         public async Task<List<TipoDto>> GetAll()
         {
-            var list =  (await _tipoRepository.GetAll()).ToList();
+            var list =  (await _tipoRepository.GetAllByExpression(x => x.Activo == true)).ToList();
             List<TipoDto> listDto = new List<TipoDto>();
             TipoDto tipoDto = new TipoDto();
             foreach(var tipo in list)

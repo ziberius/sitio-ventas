@@ -41,8 +41,7 @@ namespace SitioVentas.Services.Services
 
         private string GenerarRutaDisco(DateTime fecha)
         {
-            return _configuration.GetSection(FileConstants.FILE_LOCAL)[FileConstants.FILE_LOCAL_UNIT] + Path.DirectorySeparatorChar
-                + _configuration.GetSection(FileConstants.FILE_LOCAL)[FileConstants.APPSETTINGS_DIR]
+            return _configuration.GetSection(FileConstants.FILE_LOCAL)[FileConstants.APPSETTINGS_DIR]
                 + Path.DirectorySeparatorChar + fecha.Year.ToString()
                 + Path.DirectorySeparatorChar + meses.GetValueOrDefault(fecha.Month)
                 + Path.DirectorySeparatorChar + fecha.Day.ToString() + Path.DirectorySeparatorChar
@@ -98,7 +97,6 @@ namespace SitioVentas.Services.Services
                 _logger.LogInformation("Current directory:" + Directory.GetCurrentDirectory());
                 var archivo = File.ReadAllBytes(arch.Ruta + Path.DirectorySeparatorChar + arch.Nombre);
                 arch.Archivo = Convert.ToBase64String(archivo);
-
             }
             catch (Exception ex)
             {
