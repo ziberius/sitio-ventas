@@ -13,9 +13,233 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
 
+// Variables globales
+$primary-color: #c7a17a;    // Dorado elegante
+$secondary-color: #2c2c2c;   // Negro suave
+$accent-color: #9f7845;      // Dorado oscuro
+$light-color: #f5f5f5;      // Blanco hueso
+$text-color: #333333;       // Negro texto
+$shadow-color: rgba(0, 0, 0, 0.1);
+
+// Mixins globales
+@mixin transition($property: all, $duration: 0.3s) {
+    transition: $property $duration ease-in-out;
+}
+
+@mixin card-hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px $shadow-color;
+}
+
+// Estilos base
+body {
+    font-family: 'Playfair Display', serif;
+    color: $text-color;
+    background-color: $light-color;
+    margin: 0;
+    padding: 0;
+}
+
+// Estilos globales de PrimeNG
+.p-component {
+    font-family: 'Playfair Display', serif;
+}
+
+// Botones
+.p-button {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    @include transition;
+
+    &:hover {
+        background-color: $accent-color !important;
+        border-color: $accent-color !important;
+    }
+
+    &.p-button-text {
+        color: $primary-color;
+
+        &:hover {
+            background: rgba($primary-color, 0.1) !important;
+            color: $accent-color !important;
+        }
+    }
+
+    &.p-button-rounded {
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+// Cards y paneles
+.p-card {
+    box-shadow: 0 4px 12px $shadow-color;
+    border-radius: 8px;
+    @include transition;
+
+    &:hover {
+        @include card-hover;
+    }
+}
+
+// Carruseles
+.p-carousel {
+    .p-carousel-content {
+        padding: 2rem;
+
+        .p-carousel-item {
+            padding: 1rem;
+        }
+    }
+
+    .p-carousel-indicators {
+        .p-carousel-indicator {
+            button {
+                background-color: rgba($primary-color, 0.3);
+
+                &.p-highlight {
+                    background-color: $primary-color;
+                }
+            }
+        }
+    }
+}
+
+// Diálogos
+.p-dialog {
+    .p-dialog-header {
+        background-color: $primary-color;
+        color: white;
+        padding: 1.5rem;
+
+        .p-dialog-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .p-dialog-header-icon {
+            color: white;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+
+    .p-dialog-content {
+        padding: 2rem;
+    }
+}
+
+// Sidebar (carrito)
+.p-sidebar {
+    .p-sidebar-header {
+        background-color: $primary-color;
+        padding: 1.5rem;
+        
+        h3 {
+            color: white;
+            margin: 0;
+        }
+    }
+
+    .p-sidebar-content {
+        padding: 1rem;
+    }
+}
+
+// Tags
+.p-tag {
+    background-color: $primary-color;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+}
+
+// Inputs y campos de formulario
+.p-inputtext {
+    border-radius: 4px;
+    @include transition;
+
+    &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+}
+
+// Galería
+.p-galleria {
+    .p-galleria-item-wrapper {
+        img {
+            border-radius: 8px;
+            box-shadow: 0 5px 15px $shadow-color;
+        }
+    }
+
+    .p-galleria-thumbnail-wrapper {
+        img {
+            border-radius: 4px;
+            @include transition;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+}
+
+// Clases de utilidad
+.shadow-sm {
+    box-shadow: 0 2px 4px $shadow-color;
+}
+
+.shadow-md {
+    box-shadow: 0 4px 8px $shadow-color;
+}
+
+.shadow-lg {
+    box-shadow: 0 8px 16px $shadow-color;
+}
+
+.text-primary {
+    color: $primary-color !important;
+}
+
+.text-secondary {
+    color: $secondary-color !important;
+}
+
+.bg-primary {
+    background-color: $primary-color !important;
+}
+
+.bg-light {
+    background-color: $light-color !important;
+}
+
+// Animaciones globales
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.5s ease-out;
+}
+
+// Media queries globales
+@media screen and (max-width: 768px) {
+    // Aquí puedes agregar los estilos para pantallas móviles
+}
 
 .p-menubar {
-    background-color: #ffffff; /* Color de fondo */
+    background-color: #ffffff;
 }
 
 .p-menubar .p-menuitem-link {
@@ -186,4 +410,39 @@ $gutter: 1rem; //for primeflex grid system
 .div-foto-image {
     max-width: 90%;
     max-height: 90%;
+}
+
+.carousel-item {
+    min-height: 400px;  // Cambiamos height por min-height
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.carousel-image-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem; // Espacio para el contenido inferior
+}
+
+.carousel-image-container img {
+    max-height: 350px;  // Ajustamos la altura máxima
+    width: auto;
+    object-fit: contain;
+}
+
+.product-galleria {
+    .p-galleria-thumbnail-container {
+        overflow: hidden;
+    }
+    
+    .p-galleria-thumbnail-items-container {
+        overflow: hidden;
+    }
+
+    .p-galleria-thumbnail-item{
+        overflow: hidden;
+    }
 }

@@ -18,6 +18,10 @@ import { SubgrupoService } from './demo/service/subgrupo.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { TipoService } from './demo/service/tipo.service';
+import { ToastModule } from 'primeng/toast';
+import { SidebarModule } from 'primeng/sidebar';
+import { DialogModule } from 'primeng/dialog';
+import { GalleriaModule } from 'primeng/galleria';
 
 
 @NgModule({
@@ -28,7 +32,11 @@ import { TipoService } from './demo/service/tipo.service';
         AppRoutingModule,
         AppLayoutModule,
         ConfirmDialogModule,
-        MenubarModule
+        MenubarModule,
+        SidebarModule,
+        ToastModule,
+        DialogModule,
+        GalleriaModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

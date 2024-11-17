@@ -9,6 +9,9 @@ import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { CarouselModule } from 'primeng/carousel';
+import { SidebarModule } from 'primeng/sidebar';
+import { DialogModule } from 'primeng/dialog';
+import { GalleriaModule } from 'primeng/galleria';
 
 @NgModule({
     imports: [
@@ -20,7 +23,10 @@ import { CarouselModule } from 'primeng/carousel';
         PanelModule,
         ButtonModule,
         MegaMenuModule,
-        CarouselModule
+        CarouselModule,
+        SidebarModule,
+        DialogModule,
+        GalleriaModule
     ],
     declarations: [LandingComponent]
 })

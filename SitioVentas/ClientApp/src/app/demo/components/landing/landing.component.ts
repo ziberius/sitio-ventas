@@ -9,6 +9,10 @@ import { SubgrupoService } from '../../service/subgrupo.service';
 import { IMenuGrupo } from '../../api/menugrupo.interface';
 import { IProducto } from '../../api/producto.interface';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { SidebarModule } from 'primeng/sidebar';
+import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog';
+import { GalleriaModule } from 'primeng/galleria';
 
 @Component({
     selector: 'app-landing',
@@ -23,6 +27,25 @@ export class LandingComponent {
     itemsTmp: MegaMenuItem[] = [];
     item: MenuItem | undefined;
     responsiveOptions: any[] | undefined;
+    cartSidebarVisible: boolean = false;
+    cartItems: any[] = [];
+    productDialogVisible: boolean = false;
+    selectedProduct: IProducto = { id:0, fotos:[] };
+    galleriaResponsiveOptions: any[] = [
+        {
+            breakpoint: '1024px',
+            numVisible: 5
+        },
+        {
+            breakpoint: '768px',
+            numVisible: 3
+        },
+        {
+            breakpoint: '560px',
+            numVisible: 1
+        }
+    ];
+
     constructor(public layoutService: LayoutService, public router: Router
         , private subgrupoService: SubgrupoService
         , private messageService: MessageService
@@ -105,5 +128,78 @@ export class LandingComponent {
     hideSubmenu(item: MegaMenuItem) {
         item.visible = false;
     }
-    
+
+    addToCart(product: any) {
+        const existingItem = this.cartItems.find(item => item.id === product.id);
+        
+        if (existingItem) {
+            if (existingItem.cartQuantity < existingItem.cantidad) {
+                existingItem.cartQuantity++;
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Producto actualizado',
+                    detail: `Se agregó una unidad más de ${product.nombre}`
+                });
+            } else {
+                this.messageService.add({
+                    severity: 'warn',
+                    summary: 'Límite alcanzado',
+                    detail: `No hay más unidades disponibles de ${product.nombre}`
+                });
+            }
+        } else {
+            this.cartItems.push({
+                ...product,
+                cartQuantity: 1
+            });
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Producto agregado',
+                detail: `${product.nombre} fue agregado al carrito`
+            });
+        }
+    }
+
+    increaseQuantity(item: any) {
+        if (item.cartQuantity < item.cantidad) {
+            item.cartQuantity++;
+        }
+    }
+
+    decreaseQuantity(item: any) {
+        if (item.cartQuantity > 1) {
+            item.cartQuantity--;
+        }
+    }
+
+    removeFromCart(product: any) {
+        const index = this.cartItems.findIndex(item => item.id === product.id);
+        if (index > -1) {
+            this.cartItems.splice(index, 1);
+        }
+    }
+
+    showCart() {
+        this.cartSidebarVisible = true;
+    }
+
+    getTotal() {
+        return this.cartItems.reduce((sum, item) => sum + (item.precio * item.cartQuantity), 0);
+    }
+
+    showProductDetails(product: IProducto) {
+        this.selectedProduct = product;
+
+        this.productService.getFotosProducto(product.id).subscribe({
+            next: (data) => {
+                data.forEach(foto => {
+                    let objectURL = 'data:' + foto.tipo + ';base64,' + foto.archivo;
+                    foto.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+                    this.selectedProduct.fotos.push(foto);
+                });
+            }
+        });
+
+        this.productDialogVisible = true;
+    }
 }
