@@ -47,6 +47,11 @@ export class ProductService {
             .then(data => data);
     }
 
+    getProductsDestacados(): Observable<IProducto[]> {
+        const URL = `${this.apiUrl}/items/destacados`;
+        return this.http.get<IProducto[]>(URL);
+    }
+
     createProduct(data: IProducto): Observable<IProducto> {
         return this.http.post<IProducto>(this.apiUrl, data, { params: { blockui: true.toString() } });
     }

@@ -7,6 +7,8 @@ import { ProductService } from '../../service/product.service';
 import { Product } from '../../api/product';
 import { SubgrupoService } from '../../service/subgrupo.service';
 import { IMenuGrupo } from '../../api/menugrupo.interface';
+import { IProducto } from '../../api/producto.interface';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-landing',
@@ -15,8 +17,8 @@ import { IMenuGrupo } from '../../api/menugrupo.interface';
 })
 export class LandingComponent {
 
-    products: Product[] = [];
-    productsDestacados: Product[] = [];
+    products: IProducto[] = [];
+    productsDestacados: IProducto[] = [];
     items: MegaMenuItem[] | undefined;
     itemsTmp: MegaMenuItem[] = [];
     item: MenuItem | undefined;
@@ -24,7 +26,8 @@ export class LandingComponent {
     constructor(public layoutService: LayoutService, public router: Router
         , private subgrupoService: SubgrupoService
         , private messageService: MessageService
-        , private productService: ProductService) { }
+        , private productService: ProductService
+        , private sanitizer: DomSanitizer) { }
         
 
     ngOnInit() {
@@ -46,14 +49,19 @@ export class LandingComponent {
             }
         ];
 
-        this.productService.getProducts().then(data =>
-            this.products = data
-        );
-
-        this.productService.getProductsSmall().then(data =>
+        this.productService.getProductsDestacados().subscribe(data => {
+            data.forEach(item => {
+                var foto = item.fotos !== undefined ? item.fotos[0] : null;
+                if (foto) {
+                    let objectURL = 'data:' + foto.tipo + ';base64,' + foto.archivo;
+                    foto.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+                }
+            });
             this.productsDestacados = data
-        );
-        
+        });
+
+
+       
         this.subgrupoService.getMenu().subscribe({
             next: (data) => {
                 data.forEach(menu => {

@@ -25,5 +25,9 @@ namespace SitioVentas.Services.IServices
 
         Task<int> GetTotalNoticias();
 
+        Task<List<ItemDto>> GetDestacados();
+        Task<List<ItemDto>> GetBySugrupo(int subgrupo);
+        Task<List<ItemDto>> GetByGrupo(int grupo);
+
     }
 }

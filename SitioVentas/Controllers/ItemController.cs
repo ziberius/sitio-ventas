@@ -105,5 +105,23 @@ namespace SitioVentas.Controllers
             }
         }
 
+        [HttpGet("items/destacados")]
+        public async Task<List<ItemDto>> GetDestacados()
+        {
+            return await _itemService.GetDestacados();
+        }
+
+        [HttpGet("items/subgrupo/{id}")]
+        public async Task<List<ItemDto>> GetBySubgrupo(int subgrupo)
+        {
+            return await _itemService.GetBySugrupo(subgrupo);
+        }
+
+        [HttpGet("items/grupo/{id}")]
+        public async Task<List<ItemDto>> GetByGrupo(int grupo)
+        {
+            return await _itemService.GetByGrupo(grupo);
+        }
+
     }
 }

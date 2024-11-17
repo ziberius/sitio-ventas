@@ -19,6 +19,8 @@ namespace SitioVentas.Entities.Entities
 
         public DateTime? Actualizado { get; set; }
 
+        public bool Destacado { get; set; }
+
         public bool Activo { get; set; }
     }
 }

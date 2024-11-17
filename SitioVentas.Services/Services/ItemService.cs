@@ -44,24 +44,83 @@ namespace SitioVentas.Services.Services
             {
                 foreach (var item in itemList)
                 {
-                    //cargar imagen
-                    var fotos = (await _fotoRepository.GetAllByExpression(f => f.ItemId == item.Id)).ToList();
-                    ItemDto itemDto = ItemMapper.EntityToDto(item);
-                    FotoDto fotoDto;
-                    itemDto.Fotos = new List<FotoDto>();
-                    var foto = fotos.Find(x => x.Prioridad == 1);
-                    if (foto != null)
-                    {
-                        fotoDto = BuscarFoto(itemDto.Creado, foto);
-                        itemDto.Fotos.Add(fotoDto);
-                        
-                    }
-                    //setear subgrupo
-                    itemDto.SubgrupoNombre = subGrupos.Find(x => x.Id == item.Subgrupo).Nombre;
+                    ItemDto itemDto = await generateItemDto(subGrupos, item);
                     list.Add(itemDto);
                 }
             }
             return list;
+        }
+
+        public async Task<List<ItemDto>> GetDestacados()
+        {
+            List<ItemDto> list = new List<ItemDto>();
+            var itemList = (await _itemRepository.GetAllByExpression(x => x.Activo == true && x.Destacado == true)).ToList();
+            var subGrupos = (await _subgrupoService.GetAll()).ToList();
+            if (itemList != null)
+            {
+                foreach (var item in itemList)
+                {
+                    //cargar imagen
+                    ItemDto itemDto = await generateItemDto(subGrupos, item);
+                    list.Add(itemDto);
+                }
+            }
+            return list;
+        }
+
+        public async Task<List<ItemDto>> GetBySugrupo(int subgrupo)
+        {
+            List<ItemDto> list = new List<ItemDto>();
+            var subGrupos = (await _subgrupoService.GetAll()).ToList();
+            var itemList = (await _itemRepository.GetAllByExpression(x => x.Activo == true && x.Subgrupo == subgrupo)).ToList();
+            
+            if (itemList != null)
+            {
+                foreach (var item in itemList)
+                {
+                    //cargar imagen
+                    ItemDto itemDto = await generateItemDto(subGrupos, item);
+                    list.Add(itemDto);
+                }
+            }
+            return list;
+        }
+
+        public async Task<List<ItemDto>> GetByGrupo(int grupo)
+        {
+            List<ItemDto> list = new List<ItemDto>();
+            var subGrupos = (await _subgrupoService.GetByMenuId(grupo)).ToList();
+            var subGrupoIds = subGrupos.Select(sg => sg.Id).ToList();
+            var itemList = (await _itemRepository.GetAllByExpression(x => x.Activo == true &&  subGrupoIds.Contains(x.Subgrupo))).ToList();
+
+            if (itemList != null)
+            {
+                foreach (var item in itemList)
+                {
+                    //cargar imagen
+                    ItemDto itemDto = await generateItemDto(subGrupos, item);
+                    list.Add(itemDto);
+                }
+            }
+            return list;
+        }
+
+        private async Task<ItemDto> generateItemDto(List<SubgrupoDto> subGrupos, Item? item)
+        {
+            var fotos = (await _fotoRepository.GetAllByExpression(f => f.ItemId == item.Id)).ToList();
+            ItemDto itemDto = ItemMapper.EntityToDto(item);
+            FotoDto fotoDto;
+            itemDto.Fotos = new List<FotoDto>();
+            var foto = fotos.Find(x => x.Prioridad == 1);
+            if (foto != null)
+            {
+                fotoDto = BuscarFoto(itemDto.Creado, foto);
+                itemDto.Fotos.Add(fotoDto);
+
+            }
+            //setear subgrupo
+            itemDto.SubgrupoNombre = subGrupos.Find(x => x.Id == item.Subgrupo).Nombre;
+            return itemDto;
         }
 
         public async Task<List<FotoDto>> GetFotos(int Id)
