@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { IProducto } from '../api/producto.interface';
 import { Observable } from 'rxjs';
 import { Product } from '../api/product';
-import { IFoto } from '../api/foto';
+import { IFoto } from '../api/foto.interface';
 
 @Injectable()
 export class ProductService {

@@ -1,4 +1,4 @@
-import { IFoto } from "../api/foto";
+import { IFoto } from "../api/foto.interface";
 import { IProducto } from "../api/producto.interface";
 
 

@@ -13,5 +13,7 @@ namespace SitioVentas.Services.IServices
         Task<SubgrupoDto> Insert(SubgrupoDto subgrupo);
 
         Task<SubgrupoDto> Update(int id, SubgrupoDto subgrupo);
+
+        Task<List<SubgrupoDto>> GetByMenuId(int grupoId);
     }
 }

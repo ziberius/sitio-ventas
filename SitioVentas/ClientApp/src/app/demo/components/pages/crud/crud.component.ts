@@ -5,9 +5,9 @@ import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FileUpload } from 'primeng/fileupload';
-import { Foto, IFoto } from '../../../api/foto';
-import { IGrupo } from '../../../api/grupo';
-import { ISubgrupo } from '../../../api/subgrupo';
+import {IFoto } from '../../../api/foto.interface';
+import { IGrupo } from '../../../api/grupo.interface';
+import { ISubgrupo } from '../../../api/subgrupo.interface';
 import { GrupoService } from '../../../service/grupo.service';
 import { SubgrupoService } from '../../../service/subgrupo.service';
 import { environment } from 'src/environments/environment';
@@ -15,6 +15,7 @@ import { Producto } from '../../../model/producto.model';
 import { TipoService } from '../../../service/tipo.service';
 import { ITipo } from '../../../api/tipo.interface';
 import { concatMap, from } from 'rxjs';
+import { Foto } from '../../../api/foto';
 
 @Component({
     templateUrl: './crud.component.html',

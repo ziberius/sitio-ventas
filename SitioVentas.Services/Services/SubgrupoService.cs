@@ -43,6 +43,20 @@ namespace SitioVentas.Services.Services
             return listDto;
         }
 
+        public async Task<List<SubgrupoDto>> GetByMenuId(int grupoId)
+        {
+            var subgrupos = await _subgrupoRepository.GetAllByExpression(x => x.GrupoId == grupoId);
+            List<SubgrupoDto> listDto = new List<SubgrupoDto>();
+            SubgrupoDto subgrupoDto = new SubgrupoDto();
+            foreach (var subgrupo in subgrupos)
+            {
+                subgrupoDto = SubgrupoMapper.EntityToDto(subgrupo);
+                listDto.Add(subgrupoDto);
+            }
+            return listDto;
+
+        }
+
         public Task<SubgrupoDto> Insert(SubgrupoDto grupo)
         {
             throw new NotImplementedException();

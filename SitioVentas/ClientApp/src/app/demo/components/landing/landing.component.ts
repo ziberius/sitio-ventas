@@ -2,23 +2,29 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { MegaMenuModule } from 'primeng/megamenu';
-import { MegaMenuItem, MenuItem } from 'primeng/api';
+import { MegaMenuItem, MenuItem, MessageService } from 'primeng/api';
 import { ProductService } from '../../service/product.service';
 import { Product } from '../../api/product';
+import { SubgrupoService } from '../../service/subgrupo.service';
+import { IMenuGrupo } from '../../api/menugrupo.interface';
 
 @Component({
     selector: 'app-landing',
-    templateUrl: './landing.component.html'
+    templateUrl: './landing.component.html',
+    providers: [MessageService]
 })
 export class LandingComponent {
 
     products: Product[] = [];
     productsDestacados: Product[] = [];
     items: MegaMenuItem[] | undefined;
+    itemsTmp: MegaMenuItem[] = [];
     item: MenuItem | undefined;
     responsiveOptions: any[] | undefined;
-    constructor(public layoutService: LayoutService, public router: Router,
-        private productService: ProductService) { }
+    constructor(public layoutService: LayoutService, public router: Router
+        , private subgrupoService: SubgrupoService
+        , private messageService: MessageService
+        , private productService: ProductService) { }
         
 
     ngOnInit() {
@@ -47,55 +53,31 @@ export class LandingComponent {
         this.productService.getProductsSmall().then(data =>
             this.productsDestacados = data
         );
-
-
-
-        this.items = [
-            {
-                label: 'Clásicos',
-                items: [[
-                        {label: 'Conjuntos'},
-                        {label: 'Solitados'},
-                        {label: '1/2 Cintilla'},
-                        {label: 'Aros Argolla' }
-                ]]
-
+        
+        this.subgrupoService.getMenu().subscribe({
+            next: (data) => {
+                data.forEach(menu => {
+                    var itemTmp: MegaMenuItem = {};
+                    itemTmp.id = menu.id?.toString();
+                    itemTmp.label = menu.nombre;
+                    var itemSubList: MenuItem[][] = [];
+                    menu.menuSubgrupo?.forEach(subgrupo => {
+                        var itemSub: MenuItem = {};
+                        itemSub.id = subgrupo.id.toString();
+                        itemSub.label = subgrupo.nombre;
+                        itemSubList.push([itemSub]);
+                    });
+                    itemTmp.items = itemSubList;
+                    this.itemsTmp.push(itemTmp);
+                })
+                this.items = this.itemsTmp;
             },
-            {
-                label: 'Símbolos',
-                items: [[
-                        {label: 'Flor Loto'},
-                        {label: 'Flor de la Vida'},
-                        {label: 'Rosa de los Vientos'},
-                        {label: 'Mandela'}
-                ]]
-            },
-            {
-                label: 'Protección',
-                items: [[
-                        {label: 'Nudo de Brujas'},
-                        {label: 'San Benito'},
-                        {label: 'Triqueta'},
-                        {label: 'Tetragramatón'}
-                ]], visible: false
-            },
-            {
-                label: 'Colecciones',
-                items: [[
-                        {label: 'Lunas'},
-                        {label: 'Llamadora de Anel'},
-                        {label: 'Zodiaco'},
-                        {label: 'Trepadores'}
-                ]], visible: false
-            },
-            {
-                label: 'Accesorios',
-                items: [[
-                        {label: 'Colares Tela'},
-                        {label: 'Bordado'}
-                ]], visible: false
+            error: (error) => {
+                console.log(error);
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al traer tipos de productos', life: 3000 });
             }
-        ];
+        });
+
     }
 
     showSubmenu(item: MegaMenuItem) {

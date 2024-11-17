@@ -24,9 +24,9 @@ namespace SitioVentas.Controllers
         }
 
         [HttpGet]
-        public List<ItemDto> Get()
+        public async Task<List<ItemDto>> Get()
         {
-            return _itemService.GetAll().Result;
+            return await _itemService.GetAll();
         }
 
         [HttpGet("items/{pageNumber}/{pageSize}")]

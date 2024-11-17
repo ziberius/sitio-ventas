@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IProducto } from '../api/producto.interface';
 import { Observable } from 'rxjs';
-import { IGrupo } from '../api/grupo';
+import { IGrupo } from '../api/grupo.interface';
+
 
 @Injectable()
 export class GrupoService {

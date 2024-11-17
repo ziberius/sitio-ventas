@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IProducto } from '../api/producto.interface';
 import { Observable } from 'rxjs';
-import { ISubgrupo } from '../api/subgrupo';
+import { ISubgrupo } from '../api/subgrupo.interface';
+import { IMenuGrupo } from '../api/menugrupo.interface';
 
 @Injectable()
 export class SubgrupoService {
@@ -11,6 +12,10 @@ export class SubgrupoService {
 
     getSubgrupos(): Observable<ISubgrupo[]> {
         return this.http.get<ISubgrupo[]>(this.apiUrl);
+    }
+
+    getMenu(): Observable<IMenuGrupo[]> {
+        return this.http.get<IMenuGrupo[]>(this.apiUrl + "/menu");
     }
 
 }

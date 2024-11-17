@@ -24,9 +24,9 @@ namespace SitioVentas.Controllers
         }
 
         [HttpGet]
-        public List<GrupoDto> Get()
+        public async Task<List<GrupoDto>> Get()
         {
-            return _grupoService.GetAll().Result;
+            return await _grupoService.GetAll();
         }
 
     }

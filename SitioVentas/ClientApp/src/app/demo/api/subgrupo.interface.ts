@@ -1,4 +1,4 @@
-import { IFoto } from './foto';
+import { IFoto } from './foto.interface';
 
 export interface ISubgrupo {
     id?: number;
