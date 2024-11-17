@@ -187,11 +187,3 @@ $gutter: 1rem; //for primeflex grid system
     max-width: 90%;
     max-height: 90%;
 }
-
-.p-carousel-item {
-    display: flex; /* Activar Flexbox */
-    flex-direction: column; /* Para organizar los elementos en una columna */
-    justify-content: center; /* Centrarlos verticalmente */
-    align-items: center; /* Centrarlos horizontalmente */
-    height: 100%; /* Asegurarte de que el contenedor tenga la altura completa */
-}

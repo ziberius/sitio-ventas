@@ -49,18 +49,28 @@ export class LandingComponent {
             }
         ];
 
-        this.productService.getProductsDestacados().subscribe(data => {
-            data.forEach(item => {
-                var foto = item.fotos !== undefined ? item.fotos[0] : null;
-                if (foto) {
-                    let objectURL = 'data:' + foto.tipo + ';base64,' + foto.archivo;
-                    foto.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-                }
-            });
-            this.productsDestacados = data
+        this.productService.getProductsDestacados().subscribe({
+            next: (data) => {
+                data.forEach(item => {
+                    var foto = item.fotos !== undefined ? item.fotos[0] : null;
+                    if (foto) {
+                        let objectURL = 'data:' + foto.tipo + ';base64,' + foto.archivo;
+                        foto.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+                    }
+                    this.productsDestacados = data;
+                });
+            },
+            error: (error) => {
+                console.log(error);
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al traer productos destacados', life: 3000 });
+            }
         });
 
+                
 
+        this.subgrupoService.getSubgrupos().subscribe(data => {
+
+        })
        
         this.subgrupoService.getMenu().subscribe({
             next: (data) => {
