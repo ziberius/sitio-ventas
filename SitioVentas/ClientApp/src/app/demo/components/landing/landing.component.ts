@@ -31,6 +31,7 @@ export class LandingComponent {
     cartItems: any[] = [];
     productDialogVisible: boolean = false;
     selectedProduct: IProducto = { id:0, fotos:[] };
+    menuVisible: boolean = false;
     galleriaResponsiveOptions: any[] = [
         {
             breakpoint: '1024px',
@@ -188,18 +189,23 @@ export class LandingComponent {
     }
 
     showProductDetails(product: IProducto) {
-        this.selectedProduct = product;
-
+        product.fotos.splice(1);
         this.productService.getFotosProducto(product.id).subscribe({
             next: (data) => {
-                data.forEach(foto => {
+                data.slice(1).forEach(foto => {
                     let objectURL = 'data:' + foto.tipo + ';base64,' + foto.archivo;
                     foto.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-                    this.selectedProduct.fotos.push(foto);
+                    product.fotos.push(foto);
                 });
+            },
+            complete: () => {
+                this.selectedProduct = product;
+                this.productDialogVisible = true;
             }
         });
+    }
 
-        this.productDialogVisible = true;
+    toggleMenu() {
+        this.menuVisible = !this.menuVisible;
     }
 }

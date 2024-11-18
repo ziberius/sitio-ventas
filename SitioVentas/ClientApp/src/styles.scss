@@ -20,6 +20,8 @@ $accent-color: #9f7845;      // Dorado oscuro
 $light-color: #f5f5f5;      // Blanco hueso
 $text-color: #333333;       // Negro texto
 $shadow-color: rgba(0, 0, 0, 0.1);
+$font-primary: 'Montserrat', sans-serif;    // Para títulos y encabezados
+$font-secondary: 'Lato', sans-serif;        // Para texto general
 
 // Mixins globales
 @mixin transition($property: all, $duration: 0.3s) {
@@ -33,16 +35,24 @@ $shadow-color: rgba(0, 0, 0, 0.1);
 
 // Estilos base
 body {
-    font-family: 'Playfair Display', serif;
+    font-family: $font-secondary;
+    font-weight: 400;
+    line-height: 1.6;
     color: $text-color;
     background-color: $light-color;
     margin: 0;
     padding: 0;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: $font-primary;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
 // Estilos globales de PrimeNG
 .p-component {
-    font-family: 'Playfair Display', serif;
+    font-family: $font-secondary;
 }
 
 // Botones
@@ -114,8 +124,9 @@ body {
         padding: 1.5rem;
 
         .p-dialog-title {
-            font-size: 1.5rem;
+            font-family: $font-primary;
             font-weight: 600;
+            letter-spacing: -0.02em;
         }
 
         .p-dialog-header-icon {
@@ -169,20 +180,58 @@ body {
 
 // Galería
 .p-galleria {
+    .p-galleria-content {
+        height: 500px;
+    }
+
     .p-galleria-item-wrapper {
+        height: 400px;
+    }
+
+    .p-galleria-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        
         img {
-            border-radius: 8px;
-            box-shadow: 0 5px 15px $shadow-color;
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
         }
     }
 
     .p-galleria-thumbnail-wrapper {
-        img {
-            border-radius: 4px;
-            @include transition;
+        height: 100px;
+        position: relative;
+    }
 
-            &:hover {
-                transform: scale(1.1);
+    .p-galleria-thumbnail-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: visible;
+    }
+
+    .p-galleria-thumbnail-items-container {
+        overflow: visible;
+    }
+
+    .p-galleria-thumbnail-item {
+        opacity: 1 !important;
+        visibility: visible !important;
+        
+        img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        &.p-galleria-thumbnail-item-active {
+            img {
+                border: 2px solid var(--primary-color);
             }
         }
     }
@@ -240,6 +289,8 @@ body {
 
 .p-menubar {
     background-color: #ffffff;
+    font-family: $font-primary;
+    font-weight: 500;
 }
 
 .p-menubar .p-menuitem-link {
@@ -280,65 +331,98 @@ body {
 }
 
 .menu {
-    list-style-type: none;
+    display: flex;
+    list-style: none;
     margin: 0;
     padding: 0;
-    margin-left:2vw;
+    gap: 1.5rem;
+    align-items: center;
+
+    li {
+        position: relative;
+        
+        a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            
+            &:hover {
+                color: var(--primary-color);
+            }
+        }
+    }
+
+    .submenu {
+        display: none;
+        position: absolute;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-radius: 4px;
+        padding: 0.5rem 0;
+        z-index: 1000;
+        
+        li {
+            padding: 0.5rem 1rem;
+            white-space: nowrap;
+        }
+    }
+
+    li:hover .submenu {
+        display: block;
+    }
 }
 
-.menu > li {
-    display: inline-block;
-    position: relative;
-    margin-right:1vw;
+.mobile-menu-button {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--text-color);
+    
+    &:focus {
+        outline: none;
+    }
 }
 
-.menu > li > a {
-    display: block;
-    padding: 10px;
-    text-decoration: none;
-    color: #000;
-}
+@media screen and (max-width: 768px) {
+    .mobile-menu-button {
+        display: block;
+    }
 
-.submenu {
-    display: block;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #fff;
-    padding: 0;
-    min-width: 150px;
-    z-index: 1;
-    visibility:hidden;
-}
+    .menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        z-index: 1000;
+        
+        li {
+            width: 100%;
+            text-align: center;
+            padding: 0.5rem 0;
+        }
 
-.menu > li .submenu {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
+        .submenu {
+            position: static;
+            box-shadow: none;
+            padding: 0.5rem 0;
+            
+            li {
+                padding: 0.5rem 0;
+            }
+        }
+    }
 
-.menu > li:hover .submenu {
-    visibility: visible;
-    opacity: 1;
-}
-
-.submenu > li {
-    display: block;
-}
-
-.submenu > li > a {
-    padding: 10px;
-    color: #000;
-    text-decoration: none;
-    display:block;
-}
-
-.submenu > li > a:hover {
-    background-color: #f2f2f2;
-}
-
-.topbar{
-    justify-content:left;
-    align-items:center;
+    .show-mobile-menu {
+        display: flex;
+    }
 }
 
 .p-carousel-indicator > .p-link{
@@ -431,18 +515,4 @@ body {
     max-height: 350px;  // Ajustamos la altura máxima
     width: auto;
     object-fit: contain;
-}
-
-.product-galleria {
-    .p-galleria-thumbnail-container {
-        overflow: hidden;
-    }
-    
-    .p-galleria-thumbnail-items-container {
-        overflow: hidden;
-    }
-
-    .p-galleria-thumbnail-item{
-        overflow: hidden;
-    }
 }

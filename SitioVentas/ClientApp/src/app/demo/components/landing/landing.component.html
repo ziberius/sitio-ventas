@@ -4,7 +4,12 @@
             <a class="flex align-items-center cursor-pointer" (click)="router.navigate(['/landing'], {fragment: 'home'})">
                 <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'logo-large' : 'logo-white'}}.jpeg" alt="Sandra Kata" height="100" class="mr-0 lg:mr-2">
             </a>
-            <ul class="menu">
+
+            <button class="mobile-menu-button md:hidden ml-auto" (click)="toggleMenu()">
+                <i class="pi" [ngClass]="{'pi-bars': !menuVisible, 'pi-times': menuVisible}"></i>
+            </button>
+
+            <ul class="menu" [ngClass]="{'show-mobile-menu': menuVisible}">
                 <li><a (click)="router.navigate(['/landing'], {fragment: 'home'})" class="cursor-pointer">Inicio</a></li>
                 <li *ngFor="let item of items">
                     <a (click)="router.navigate(['/landing'], {fragment: 'home'})" class="cursor-pointer">{{ item.label }}</a>
@@ -15,7 +20,8 @@
                     </ul>
                 </li>
             </ul>
-            <div class="flex align-items-center ml-auto">
+
+            <div class="flex align-items-center ml-auto md:ml-0">
                 <p-button icon="pi pi-shopping-cart" (click)="showCart()" badge="{{cartItems.length}}" styleClass="p-button-rounded p-button-text"></p-button>
             </div>
         </div>
