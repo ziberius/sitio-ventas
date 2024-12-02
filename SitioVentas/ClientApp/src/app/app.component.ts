@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem, PrimeNGConfig } from 'primeng/api';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 
 @Component({
     selector: 'app-root',
@@ -22,9 +24,24 @@ export class AppComponent implements OnInit {
             ]
         }
     ];
+
+
+
     constructor(private primengConfig: PrimeNGConfig) { }
 
     ngOnInit() {
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2yNdKLId5tOiHt4hKooM5ZqeZCbA06LE",
+            authDomain: "sandra-joyas.firebaseapp.com",
+            projectId: "sandra-joyas",
+            storageBucket: "sandra-joyas.firebasestorage.app",
+            messagingSenderId: "425360206378",
+            appId: "1:425360206378:web:2c8e18a72c92847eb9b153",
+            measurementId: "G-S9XMWEM6LQ"
+        };
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
         this.primengConfig.ripple = true;
     }
 }
