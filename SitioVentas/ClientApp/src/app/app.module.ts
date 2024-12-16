@@ -22,6 +22,8 @@ import { ToastModule } from 'primeng/toast';
 import { SidebarModule } from 'primeng/sidebar';
 import { DialogModule } from 'primeng/dialog';
 import { GalleriaModule } from 'primeng/galleria';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './demo/components/auth/auth.interceptor';
 
 
 @NgModule({
@@ -40,6 +42,11 @@ import { GalleriaModule } from 'primeng/galleria';
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        },
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, ProductService, GrupoService, SubgrupoService, ConfirmationService
         , TipoService

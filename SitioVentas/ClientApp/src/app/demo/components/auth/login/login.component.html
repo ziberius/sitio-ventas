@@ -9,13 +9,12 @@
                 </div>
 
                 <div>
-                    <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-                    <input id="email1" type="text" placeholder="Email" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
+                    <label for="email1" class="block text-900 text-xl font-medium mb-2">Usuario</label>
+                    <input id="email1" type="text" placeholder="Email" pInputText class="w-full md:w-30rem mb-5" [(ngModel)]="credentials.username" style="padding:1rem">
 
-                    <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                    <p-password id="password1" [(ngModel)]="password" placeholder="Contrasena" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
-
-                    <button pButton pRipple label="Ingresar" class="w-full p-3 text-xl" [routerLink]="['/']"></button>
+                    <label for="password1" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
+                    <p-password id="password1" [(ngModel)]="credentials.password" placeholder="Contraseña" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+                    <button pButton pRipple label="Ingresar" (click)="login()" class="w-full p-3 text-xl"></button>
                 </div>
             </div>
         </div>
